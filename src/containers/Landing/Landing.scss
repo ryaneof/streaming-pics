@@ -1,0 +1,74 @@
+@import "../../theme/variables.scss";
+
+.landing {
+  dd {
+    margin-bottom: 15px;
+  }
+}
+.landingWrapper {
+  width: 100%;
+  position: relative;
+  background: #2d2d2d;
+  color: white;
+  text-align: center;
+
+  h1 {
+    color: $white;
+    font-size: 3.2em;
+    font-weight: 100;
+    padding-top: 200px;
+    z-index: 100;
+  }
+
+  h2 {
+    color: #ddd;
+    font-size: 1.6em;
+    font-weight: 100;
+    margin: 20px;
+    z-index: 100;
+  }
+
+  p {
+    margin: 10px;
+    z-index: 100;
+
+    &.signInWithTwitterButton {
+      margin-top: 40px;
+      text-align: center;
+
+      a {
+        color: #878a8d;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        line-height: 28px;
+        font-size: 16px;
+
+        &:hover,
+        &:focus,
+        &:active {
+          opacity: 0.7
+        }
+      }
+    }
+  }
+}
+
+.landingVideo {
+  position: absolute;
+  top: 0;
+  left: 1%;
+  margin: 0 auto;
+  max-width: 98%;
+  height: 100%;
+  opacity: 0.08;
+  z-index: 10;
+}
+
+.landingInfo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+}

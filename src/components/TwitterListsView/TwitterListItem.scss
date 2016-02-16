@@ -1,0 +1,115 @@
+.twitterListItem {
+  display: flex;
+  width: 70%;
+  margin: 0 auto;
+  flex-direction: column;
+  padding: 20px;
+  // margin-bottom: 20px;
+  border-bottom: 1px solid #d8dbde;
+
+  &:first-child {
+    margin-top: 20px;
+  }
+
+  &:last-child {
+    border-bottom-color: transparent;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: #e8ebee;
+  }
+}
+
+
+.twitterListItemNameContainer {
+  // flex-basis: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .twitterListItemLinkToList {
+    a {
+      width: auto;
+      color: #212427;
+      font-size: 18px;
+      line-height: 28px;
+
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: none;
+        opacity: 0.7;
+      }
+    }
+  }
+
+  .twitterListItemFullName {
+    color: #c8cbce;
+  }
+
+}
+
+.twitterListItemMetaContainer {
+  // flex-basis: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: right;
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+
+  .twitterListItemLinkToUser {
+    a {
+      width: auto;
+      color: #878a8d;
+      font-size: 14px;
+      line-height: 28px;
+
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: none;
+        opacity: 0.7;
+      }
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      margin-right: 4px;
+    }
+  }
+
+  .twitterListItemMeta {
+    span {
+      min-width: 130px;
+      display: block;
+      float: left;
+    }
+
+    strong {
+      color: #212427;
+      font-weight: 400;
+    }
+
+    small {
+      color: #878a8d;
+      font-weight: 200;
+      font-size: 14px;
+      padding-left: 3px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .twitterListItem {
+    width: 100%;
+  }
+}
+

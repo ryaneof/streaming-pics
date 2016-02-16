@@ -1,0 +1,59 @@
+.twitterListsViewNavigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 40px;
+
+  li {
+    display: inline-block;
+    border-width: 1px;
+    border-color: #878a8d;
+    border-style: solid;
+
+    a {
+      color: #878a8d;
+      display: block;
+      padding: 6px 10px;
+      text-decoration: none;
+
+      &:hover {
+        background-color: #878a8d;
+        color: #f1f4f7;
+      }
+    }
+
+    &.highlight {
+      a {
+        background-color: #878a8d;
+        color: #f1f4f7;
+      }
+    }
+
+    &:first-child {
+      border-width: 1px;
+      border-radius: 3px 0px 0px 3px;
+    }
+
+    &:nth-child(2) {
+      border-width: 1px 0px;
+      border-radius: 0px;
+    }
+
+    &:last-child {
+      border-width: 1px;
+      border-radius: 0px 3px 3px 0px;
+    }
+  }
+}
+
+.twitterListsViewLoadingWrapper {
+  text-align: center;
+  padding: 25px 0;
+}
+
+.twitterListsViewErrorWrapper {
+  text-align: center;
+  padding: 50px 0;
+}

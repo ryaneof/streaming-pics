@@ -1,0 +1,239 @@
+.twitterMediaModalBody {
+  position: relative;
+}
+
+.twitterMediaModalContent {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .twitterMediaModalImageWrapper {
+
+    flex-basis: 62%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #212427;
+    border-radius: 6px 0px 0px 6px;
+
+    img {
+      display: block;
+      margin: 8%;
+      max-width: 80%;
+      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .twitterMediaModalInfoWrapper {
+    padding: 16px;
+    flex-basis: 38%;
+    background-color: white;
+    border-radius: 0px 6px 6px 0px;
+  }
+
+  .twitterMediaModalUserInfoWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+
+    p {
+      padding-bottom: 0;
+    }
+  }
+
+  .twitterMediaModalUserAvatarWrapper {
+    padding-right: 16px;
+
+    img {
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+    }
+  }
+
+  .twitterMediaModalUserNameWrapper {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      font-size: 16px;
+      font-weight: 600;
+      color: #212427;
+      text-decoration: none;
+      padding-top: 12px;
+      padding-bottom: 4px;
+      line-height: 18px;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    span {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 18px;
+      height: 18px;
+
+      &.twitterMediaModalUserScreenName {
+        color: #878a8d;
+      }
+    }
+  }
+
+  .twitterMediaModalTweetText {
+    font-size: 16px;
+    line-height: 24px;
+    padding-bottom: 8px;
+  }
+
+  .twitterMediaModalTweetMeta {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .twitterMediaModalCreatedTime {
+    color: #878a8d;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .twitterMediaModalFavoriteCount {
+    padding-right: 1rem;
+    display: flex;
+    max-width: 50%;
+    overflow: hidden;
+    color: #878a8d;
+    opacity: 1;
+    font-weight: 400;
+    text-decoration: none;
+    cursor: default;
+
+    span:last-child {
+      padding-left: 3px;
+    }
+  }
+
+  .twitterMediaModalExternalLink {
+    height: 28px;
+    line-height: 28px;
+    margin-left: -5px;
+    margin-right: 5px;
+
+    a {
+      color: #878a8d;
+      &:hover {
+        color: #abadaf;
+
+        svg {
+          opacity: 0.7;
+        }
+      }
+    }
+
+    span {
+      display: block;
+      float: left;
+      height: 28px;
+      line-height: 28px;
+
+      strong {
+        padding-left: 3px;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+.twitterMediaModalPrev {
+  position: absolute;
+  left: -50px;
+  top: 10%;
+  width: 50px;
+  height: 80%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity linear 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.twitterMediaModalNext {
+  position: absolute;
+  right: -50px;
+  top: 10%;
+  width: 50px;
+  height: 80%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity linear 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .twitterMediaModalContent {
+    flex-direction: column;
+    .twitterMediaModalUserNameWrapper {
+      span {
+        max-width: 240px;
+      }
+    }
+    .twitterMediaModalImageWrapper {
+      border-radius: 6px 6px 0px 0px;
+    }
+
+    .twitterMediaModalInfoWrapper {
+      border-radius: 0px 0px 6px 6px;
+    }
+  }
+
+  .twitterMediaModalPrev {
+    display: none;
+    // left: 5px;
+    // height: 50%;
+  }
+
+  .twitterMediaModalNext {
+    display: none;
+    // right: 5px;
+    // height: 50%;
+  }
+}
+
+@media (min-width: 768px) {
+  .twitterMediaModalContent {
+    .twitterMediaModalUserNameWrapper {
+      span {
+        max-width: 120px;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .twitterMediaModalContent {
+    .twitterMediaModalUserNameWrapper {
+      span {
+        max-width: 240px;
+      }
+    }
+  }
+}

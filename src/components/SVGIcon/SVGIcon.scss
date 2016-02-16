@@ -1,0 +1,57 @@
+.icon {
+  position: relative;
+  display: inline-block;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.iconLike {
+    margin-top: 2px;
+    margin-bottom: -2px;
+
+    svg {
+      width: 17px;
+      height: 15px;
+    }
+  }
+
+  &.iconLikeDark {
+    margin-top: 2px;
+    margin-bottom: -2px;
+
+    svg {
+      width: 17px;
+      height: 15px;
+    }
+  }
+
+  &.iconPrevious {
+    svg {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  &.iconNext {
+    svg {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  &.iconTwitter {
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &.iconInstagram {
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}

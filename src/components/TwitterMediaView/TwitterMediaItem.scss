@@ -1,0 +1,127 @@
+.twitterMediaItemImage {
+  max-width: 100%;
+}
+
+.twitterMediaItem {
+
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-basis: 16rem;
+  border-radius: 5px;
+  background-color: #e8ebee;
+  box-sizing: border-box;
+  min-width: 16rem;
+  min-height: 16rem;
+  margin: 5px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  cursor: pointer;
+  transition: filter .25s;
+
+  &:hover {
+    .twitterMediaItemOverlay {
+      opacity: 1;
+    }
+  }
+
+  &:nth-child(5n) {
+    flex-basis: 28rem;
+  }
+
+  &:nth-child(2n+1) {
+    flex-basis: 20rem;
+  }
+
+  &:nth-child(7n+4) {
+    flex-basis: 40rem;
+    min-height: 24rem;
+  }
+
+  .twitterMediaItemOverlay {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-image: linear-gradient(rgba(0,0,0,0.35) 0,rgba(0,0,0,0.35));
+    opacity: 0;
+    transition: opacity linear .25s;
+
+    .twitterMediaItemTip {
+      align-self: flex-end;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 0;
+      line-height: 2rem;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .twitterMediaItemUserLink {
+      padding-left: 1rem;
+      display: flex;
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: white;
+      font-weight: 400;
+      text-decoration: none;
+      opacity: 1;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+
+      img {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        margin-right: 4px;
+      }
+
+      span {
+        white-space: nowrap;
+      }
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    .twitterMediaItemFavoriteCount {
+      margin-right: 1rem;
+      display: flex;
+      max-width: 30%;
+      overflow: hidden;
+      color: white;
+      opacity: 1;
+      font-weight: 400;
+      text-decoration: none;
+      text-shadow: 0 0 1px rgba(0,0,0,0.6);
+      cursor: default;
+
+      span:last-child {
+        padding-left: 3px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .twitterMediaItem {
+    &:nth-child(5n) {
+      flex-basis: 16rem;
+    }
+
+    &:nth-child(2n+1) {
+      flex-basis: 16rem;
+    }
+
+    &:nth-child(7n+4) {
+      flex-basis: 16rem;
+      min-height: 16rem;
+    }
+  }
+}

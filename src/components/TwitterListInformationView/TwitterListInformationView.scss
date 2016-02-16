@@ -1,0 +1,156 @@
+.twitterListInformation {
+  position: relative;
+  min-height: 140px;
+  width: 100%;
+  margin-bottom: 36px;
+
+  p {
+    margin-bottom: 0;
+
+    &.twitterListInformationName {
+      margin-bottom: 20px;
+    }
+
+    &.twitterListInformationOwner {
+      margin-top: 36px;
+      margin-bottom: 20px;
+    }
+
+    &.twitterListInformationFullName {
+      display: none;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.twitterListInformationName {
+  width: 100%;
+  text-align: center;
+  font-size: 28px;
+  line-height: 42px;
+  font-weight: 200;
+}
+
+.twitterListInformationOwner {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  line-height: 24px;
+
+  span {
+    font-size: 12px;
+    color: #878a8d;
+    text-transform: uppercase;
+  }
+
+  a {
+    margin-left: 4px;
+    color: #878a8d;
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 0.7;
+      text-decoration: none;
+    }
+  }
+
+  strong {
+    // padding-left: 4px;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+}
+
+.twitterListInformationFullName {
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #878a8d;
+
+}
+
+.twitterListInformationMeta {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+
+  span {
+    padding-right: 18px;
+    display: inline-block;
+
+    &.highlight a {
+      border-bottom: 2px solid #878a8d;
+    }
+  }
+
+  a {
+    padding-bottom: 4px;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom-color: #878a8d;
+      opacity: 0.6;
+    }
+  }
+
+  strong {
+    color: #212427;
+    font-weight: 400;
+  }
+
+  small {
+    color: #878a8d;
+    font-weight: 200;
+    font-size: 14px;
+    padding-left: 3px;
+  }
+}
+
+@media (max-width: 768px) {
+  .twitterListInformationMeta {
+
+    span {
+      display: block;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      line-height: 42px;
+
+      &.highlight {
+        border-bottom-color: #b5b5b5;
+
+        a {
+          border-bottom: none;
+        }
+      }
+
+      a {
+        padding-bottom: 0;
+        display: block;
+        border-bottom: none;
+
+        &:hover {
+          border-bottom: none;
+        }
+      }
+
+      strong {
+        display: block;
+        float: right;
+      }
+    }
+  }
+}
