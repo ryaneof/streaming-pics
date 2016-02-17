@@ -9,19 +9,23 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import Helmet from 'react-helmet';
 import { isLoaded as isAuthLoaded, load as loadAuth, signOut } from 'redux/modules/auth';
-import { pushState } from 'redux-router';
-import connectData from 'helpers/connectData';
+import { routeActions } from 'react-router-redux';
 import config from '../../config';
+import { asyncConnect } from 'redux-async-connect';
 
-function fetchData(getState, dispatch) {
-  const promises = [];
-  if (!isAuthLoaded(getState())) {
-    promises.push(dispatch(loadAuth()));
+
+@asyncConnect([{
+  promise: ({ store: { dispatch, getState }}) => {
+    const promises = [];
+
+    if (!isAuthLoaded(getState())) {
+      promises.push(dispatch(loadAuth()));
+    }
+
+    return Promise.all(promises);
   }
-  return Promise.all(promises);
-}
+}])
 
-@connectData(fetchData)
 @connect(
   state => ({
     user: state.auth.user,
@@ -29,7 +33,7 @@ function fetchData(getState, dispatch) {
   }),
   {
     signOut,
-    pushState
+    pushState: routeActions.push
   }
 )
 
@@ -49,17 +53,17 @@ export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       // signed in, redirect to home
-      this.props.pushState(null, '/home');
+      this.props.pushState('/home');
     } else if (this.props.user && !nextProps.user) {
       // signed out, redirect to landing page
-      this.props.pushState(null, '/');
+      this.props.pushState('/');
     }
   }
 
   handleSignOut = (event) => {
     event.preventDefault();
     this.props.signOut();
-  }
+  };
 
   render() {
     const { user } = this.props;

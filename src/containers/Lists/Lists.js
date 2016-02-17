@@ -12,7 +12,7 @@ import {
 @connect(
   state => ({
     user: state.auth.user,
-    location: state.router.location
+    location: state.routing.location
   }),
   {
     setAppTitle

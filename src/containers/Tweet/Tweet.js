@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { pushState } from 'redux-router';
 import ga from 'react-ga';
 import config from '../../config';
 import Helmet from 'react-helmet';
@@ -17,14 +16,13 @@ import { SVGIcon, LoadingIcon } from 'components';
 @connect(
   state => ({
     tweetInformation: state.tweetInformation,
-    location: state.router.location
+    location: state.routing.location
   }),
   {
     loadTweetInformation,
     resetTweetInformation,
     displayPreviousMedium,
-    displayNextMedium,
-    pushState
+    displayNextMedium
   }
 )
 
@@ -37,8 +35,7 @@ export default class Medium extends Component {
     loadTweetInformation: PropTypes.func,
     resetTweetInformation: PropTypes.func,
     displayPreviousMedium: PropTypes.func,
-    displayNextMedium: PropTypes.func,
-    pushState: PropTypes.func
+    displayNextMedium: PropTypes.func
   }
 
   componentDidMount = () => {
