@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import { routerStateReducer } from 'redux-router';
+import { routeReducer as routing } from 'react-router-redux';
+import { reducer as reduxAsyncConnect } from 'redux-async-connect';
 import { reducer as form } from 'redux-form';
 import appTitle from './appTitle';
 import auth from './auth';
@@ -16,7 +17,8 @@ export default combineReducers({
   listInformation,
   lists,
   media,
-  router: routerStateReducer,
+  reduxAsyncConnect,
+  routing,
   tweetInformation,
   userProfile
 });

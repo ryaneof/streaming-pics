@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { pushState } from 'redux-router';
+import { routeActions } from 'react-router-redux';
 
 @connect(
   state => ({
     lists: state.lists
   }),
   {
-    pushState
+    pushState: routeActions.push
   }
 )
 
@@ -22,7 +22,7 @@ export default class TwitterListItem extends Component {
     const { listItem } = this.props;
     event.stopPropagation();
     event.preventDefault();
-    this.props.pushState(null, `/${ listItem.ownerScreenName }/list/${ listItem.listSlug }`);
+    this.props.pushState(`/${ listItem.ownerScreenName }/list/${ listItem.listSlug }`);
   }
 
   render() {

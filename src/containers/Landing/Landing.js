@@ -13,7 +13,7 @@ import { SVGIcon } from 'components';
   state => ({
     user: state.auth.user,
     appTitle: state.appTitle,
-    location: state.router.location
+    location: state.routing.location
   }),
   {
     resetAppTitle

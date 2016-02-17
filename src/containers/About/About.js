@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 @connect(
   state => ({
-    location: state.router.location
+    location: state.routing.location
   })
 )
 

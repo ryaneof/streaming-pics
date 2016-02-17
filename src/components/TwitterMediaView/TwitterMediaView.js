@@ -18,7 +18,7 @@ import TwitterMediaContainer from './TwitterMediaContainer';
 @connect(
   state => ({
     media: state.media,
-    locationPathName: state.router.location.pathname
+    locationPathName: state.routing.location.pathname
   }),
   {
     initMedia,

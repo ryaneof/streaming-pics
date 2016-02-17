@@ -12,7 +12,7 @@ import TwitterListItem from './TwitterListItem';
 @connect(
   state => ({
     lists: state.lists,
-    locationPathName: state.router.location.pathname
+    locationPathName: state.routing.location.pathname
   }),
   {
     initLists,
