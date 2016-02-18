@@ -137,7 +137,14 @@ export default class TwitterMediaModal extends Component {
           <Helmet title={ `Picture by @${ mediaItem.userScreenName }` }/>
           <div className={ styles.twitterMediaModalContent }>
             <div className={ styles.twitterMediaModalImageWrapper } style={ modalImageWrapperStyle }>
+            { mediaItem.mediumType === 'animated_gif' &&
+              <video ref="mediumAnimatedGIF" autoPlay loop muted>
+                <source src={ mediaItem.mediumVideoURL } type="video/mp4" />
+              </video>
+            }
+            { !mediaItem.mediumVideoURL &&
               <img src={ mediaItem.mediumURL } />
+            }
             </div>
             <div className={ styles.twitterMediaModalInfoWrapper } style={ modalImageWrapperStyle }>
               <div className={ styles.twitterMediaModalUserInfoWrapper }>

@@ -46,6 +46,11 @@ export default class TwitterMediaItem extends Component {
         onClick={ this.handleClickMediaItem }
       >
         <div className={ styles.twitterMediaItemOverlay }>
+          { (mediaItem.mediumType === 'animated_gif') &&
+          <div className={ styles.twitterMediaItemPlayButton }>
+            <SVGIcon iconName="play" iconClass="iconPlay" />
+          </div>
+          }
           <p className={ styles.twitterMediaItemTip }>
             <Link
               className={ styles.twitterMediaItemUserLink }
@@ -61,6 +66,13 @@ export default class TwitterMediaItem extends Component {
             </span>
           </p>
         </div>
+        { (mediaItem.mediumType === 'animated_gif') &&
+        <div className={ styles.twitterMediaItemSpecialMediaType }>
+          <p>
+            <strong>GIF</strong>
+          </p>
+        </div>
+        }
       </div>
     );
   }
