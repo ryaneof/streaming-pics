@@ -24,6 +24,24 @@ export function extractTweetMedia(tweet) {
           mediumType: extendedMediaItem.type,
           mediumURL: extendedMediaItem.media_url_https
         });
+      } else if (extendedMediaItem.type === 'animated_gif') {
+
+        if (extendedMediaItem.video_info && extendedMediaItem.video_info.variants) {
+          const animatedGIFVariant = extendedMediaItem.video_info.variants[0];
+          twitterMediaArr.push({
+            mediumExternalURL: extendedMediaItem.url,
+            mediumIdStr: extendedMediaItem.id_str,
+            mediumSource: 'Twitter',
+            mediumType: extendedMediaItem.type,
+            mediumURL: extendedMediaItem.media_url_https,
+            mediumVideoURL: animatedGIFVariant.url
+          });
+
+          if (animatedGIFVariant.content_type !== 'video/mp4') {
+            console.log('==> 😅  collect unknown animated_gif variant content type', animatedGIFVariant);
+          }
+        }
+
       } else {
         console.log('==> 😆  collect unknown media type', extendedMediaItem.type);
       }
