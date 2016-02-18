@@ -66,12 +66,6 @@ export default class Medium extends Component {
     });
   }
 
-  // shouldComponentUpdate = (nextProps) => {
-  //   const userScreenNameChanged = (nextProps.tweetInformation.userScreenName !== this.props.tweetInformation.userScreenName);
-  //   const tweetIdStrChanged = (nextProps.tweetInformation.tweetIdStr !== this.props.tweetInformation.tweetIdStr);
-  //   return (userScreenNameChanged || tweetIdStrChanged);
-  // }
-
   componentWillUnmount = () => {
     this.props.resetTweetInformation();
     global.removeEventListener('keydown', this.handleKeydownEvent);
@@ -196,7 +190,14 @@ export default class Medium extends Component {
           <div className={ styles.tweetCurrentMediumWrapper }>
             <div className={ `${ styles.tweetCurrentMediumContentWrapper } container` }>
               <div className={ styles.tweetCurrentMediumContainer }>
+              { currentMedium.mediumType === 'animated_gif' &&
+                <video autoPlay loop muted>
+                  <source src={ currentMedium.mediumVideoURL } type="video/mp4" />
+                </video>
+              }
+              { !currentMedium.mediumVideoURL &&
                 <img src={ currentMedium.mediumURL } />
+              }
               </div>
                <div className={ `${ styles.tweetMediumPrev } ${ tweetPrevClassName }` } onClick={ this.handleDisplayPreviousMedia }>
                 <SVGIcon iconName="previous" iconClass="iconPrevious" />
