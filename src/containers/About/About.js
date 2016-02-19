@@ -45,6 +45,7 @@ export default class About extends Component {
             </p>
             <p>Streaming Pics is still in beta. Here're some available features:</p>
             <ul>
+              <li>Supports GIFs uploaded from Twitter official clients.</li>
               <li>Display media from posted or liked tweets by a Twitter user.</li>
               <li>Display media from tweets in a public Twitter list.</li>
               <li>Display media from authenticated user's timeline (realtime).</li>
