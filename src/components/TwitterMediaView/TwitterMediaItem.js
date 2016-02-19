@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import moment from 'moment';
 import { SVGIcon } from 'components';
 import {
   displayMediaModal
@@ -46,7 +47,7 @@ export default class TwitterMediaItem extends Component {
         onClick={ this.handleClickMediaItem }
       >
         <div className={ styles.twitterMediaItemOverlay }>
-          { (mediaItem.mediumType === 'animated_gif') &&
+          { (['animated_gif', 'video'].indexOf(mediaItem.mediumType) > -1 ) &&
           <div className={ styles.twitterMediaItemPlayButton }>
             <SVGIcon iconName="play" iconClass="iconPlay" />
           </div>
@@ -70,6 +71,14 @@ export default class TwitterMediaItem extends Component {
         <div className={ styles.twitterMediaItemSpecialMediaType }>
           <p>
             <strong>GIF</strong>
+          </p>
+        </div>
+        }
+        { (mediaItem.mediumType === 'video') &&
+        <div className={ styles.twitterMediaItemSpecialMediaType }>
+          <p>
+            <strong>VIDEO</strong>
+            <span>{ `${ moment.utc(mediaItem.mediumVideoDurationMillis).format('mm:ss') }` }</span>
           </p>
         </div>
         }

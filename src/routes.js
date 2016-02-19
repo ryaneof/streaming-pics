@@ -17,11 +17,11 @@ import {
 } from 'containers';
 
 export default (store) => {
-  const requireSignedIn = (nextState, replaceState, cb) => {
+  const requireSignedIn = (nextState, replace, cb) => {
     function checkAuth() {
       const { auth: { user }} = store.getState();
       if (!user) {
-        replaceState(null, '/');
+        replace('/');
       }
       cb();
     }
@@ -33,11 +33,11 @@ export default (store) => {
     }
   };
 
-  const onEnterIndexRoute = (nextState, replaceState, cb) => {
+  const onEnterIndexRoute = (nextState, replace, cb) => {
     function checkAuth() {
       const { auth: { user }} = store.getState();
       if (user) {
-        replaceState(null, '/home');
+        replace('/home');
       }
       cb();
     }

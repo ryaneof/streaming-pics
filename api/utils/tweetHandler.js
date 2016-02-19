@@ -16,34 +16,65 @@ export function extractTweetMedia(tweet) {
 
   if (containsExtendedMediaEntities) {
     status.extended_entities.media.forEach((extendedMediaItem) => {
-      if (extendedMediaItem.type === 'photo') {
-        twitterMediaArr.push({
-          mediumExternalURL: extendedMediaItem.url,
-          mediumIdStr: extendedMediaItem.id_str,
-          mediumSource: 'Twitter',
-          mediumType: extendedMediaItem.type,
-          mediumURL: extendedMediaItem.media_url_https
-        });
-      } else if (extendedMediaItem.type === 'animated_gif') {
 
-        if (extendedMediaItem.video_info && extendedMediaItem.video_info.variants) {
-          const animatedGIFVariant = extendedMediaItem.video_info.variants[0];
+      switch (extendedMediaItem.type) {
+        case 'photo':
           twitterMediaArr.push({
             mediumExternalURL: extendedMediaItem.url,
             mediumIdStr: extendedMediaItem.id_str,
             mediumSource: 'Twitter',
             mediumType: extendedMediaItem.type,
-            mediumURL: extendedMediaItem.media_url_https,
-            mediumVideoURL: animatedGIFVariant.url
+            mediumURL: extendedMediaItem.media_url_https
           });
+          return;
+        case 'animated_gif':
+          if (extendedMediaItem.video_info && extendedMediaItem.video_info.variants) {
+            const animatedGIFVariant = extendedMediaItem.video_info.variants[0];
+            twitterMediaArr.push({
+              mediumExternalURL: extendedMediaItem.url,
+              mediumIdStr: extendedMediaItem.id_str,
+              mediumSource: 'Twitter',
+              mediumType: extendedMediaItem.type,
+              mediumURL: extendedMediaItem.media_url_https,
+              mediumVideoURL: animatedGIFVariant.url
+            });
 
-          if (animatedGIFVariant.content_type !== 'video/mp4') {
-            console.log('==> 😅  collect unknown animated_gif variant content type', animatedGIFVariant);
+            if (animatedGIFVariant.content_type !== 'video/mp4') {
+              console.log('==> 😅  collect unknown animated_gif variant content type', animatedGIFVariant);
+            }
           }
-        }
+          return;
+        case 'video':
+          if (extendedMediaItem.video_info && extendedMediaItem.video_info.variants) {
+            const videoInfo = extendedMediaItem.video_info;
+            let highestBitrateMP4VideoURL = '';
+            let highestBitrate = 0;
 
-      } else {
-        console.log('==> 😆  collect unknown media type', extendedMediaItem.type);
+            videoInfo.variants.forEach((variant) => {
+              if (variant.content_type === 'video/mp4' && variant.bitrate > highestBitrate) {
+                highestBitrate = variant.bitrate;
+                highestBitrateMP4VideoURL = variant.url;
+              }
+            });
+
+            if (highestBitrateMP4VideoURL) {
+              twitterMediaArr.push({
+                mediumExternalURL: extendedMediaItem.url,
+                mediumIdStr: extendedMediaItem.id_str,
+                mediumSource: 'Twitter',
+                mediumType: extendedMediaItem.type,
+                mediumURL: extendedMediaItem.media_url_https,
+                mediumVideoURL: highestBitrateMP4VideoURL,
+                mediumVideoDurationMillis: videoInfo.duration_millis,
+                mediumVideoAspectRadioArr: videoInfo.aspect_ratio
+              });
+            } else {
+              console.log('==> 😅  collect unknown type variant content type', videoInfo);
+            }
+          }
+          return;
+        default:
+          console.log('==> 😆  collect unknown media type', extendedMediaItem.type);
       }
     });
   }

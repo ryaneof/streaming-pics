@@ -131,6 +131,9 @@ export default class Medium extends Component {
     const { tweetInformation, params } = this.props; // eslint-disable-line no-unused-vars
     const { loading, tweet, error } = tweetInformation; // eslint-disable-line no-unused-vars
     const { mediaArr, currentMedium, currentMediumIndex } = tweet; // eslint-disable-line no-unused-vars
+    const videoStyle = global.innerHeight ? {
+      maxHeight: global.innerHeight * 0.86
+    } : {};
     let tweetPrevClassName = '';
     let tweetNextClassName = '';
     let tweetCreatedTime;
@@ -191,7 +194,12 @@ export default class Medium extends Component {
             <div className={ `${ styles.tweetCurrentMediumContentWrapper } container` }>
               <div className={ styles.tweetCurrentMediumContainer }>
               { currentMedium.mediumType === 'animated_gif' &&
-                <video autoPlay loop muted>
+                <video autoPlay loop muted style={ videoStyle }>
+                  <source src={ currentMedium.mediumVideoURL } type="video/mp4" />
+                </video>
+              }
+              { currentMedium.mediumType === 'video' &&
+                <video autoPlay controls style={ videoStyle }>
                   <source src={ currentMedium.mediumVideoURL } type="video/mp4" />
                 </video>
               }
