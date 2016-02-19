@@ -209,7 +209,7 @@ export default class TwitterMediaView extends Component {
   initSocketClient = (mediaViewParams) => {
     this.props.initMedia();
 
-    this.socketClient = io('', { path: '/ws' });
+    this.socketClient = io('', { path: '/ws', transports: ['polling'] });
     this.socketClient.on(this.props.mediaInitedListener, this.onMediaInited);
     this.socketClient.on(this.props.previousMediaLoadedListener, this.onPreviousMediaLoaded);
     this.socketClient.on(this.props.newMediaReceivedListener, this.onNewMediaReceived);
