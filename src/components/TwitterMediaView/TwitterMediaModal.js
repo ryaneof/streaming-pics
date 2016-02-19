@@ -129,6 +129,10 @@ export default class TwitterMediaModal extends Component {
       minHeight: global.innerHeight * 0.86
     } : {};
 
+    const videoStyle = global.innerHeight ? {
+      maxHeight: global.innerHeight * 0.86 * 0.86
+    } : {};
+
     return (
       <Modal className="modal-outer-close-button" show={ this.props.showModal } bsSize="large" onHide={ this.close }>
         <Modal.Header closeButton>
@@ -138,7 +142,12 @@ export default class TwitterMediaModal extends Component {
           <div className={ styles.twitterMediaModalContent }>
             <div className={ styles.twitterMediaModalImageWrapper } style={ modalImageWrapperStyle }>
             { mediaItem.mediumType === 'animated_gif' &&
-              <video ref="mediumAnimatedGIF" autoPlay loop muted>
+              <video ref="mediumAnimatedGIF" autoPlay loop muted style={ videoStyle }>
+                <source src={ mediaItem.mediumVideoURL } type="video/mp4" />
+              </video>
+            }
+            { mediaItem.mediumType === 'video' &&
+              <video ref="mediumVideo" autoPlay controls style={ videoStyle }>
                 <source src={ mediaItem.mediumVideoURL } type="video/mp4" />
               </video>
             }
