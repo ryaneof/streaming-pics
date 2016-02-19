@@ -43,15 +43,19 @@
 
   .twitterMediaItemSpecialMediaType {
     position: absolute;
+    width: 100%;
     top: 0;
     left: 0;
 
     p {
-      text-align: right;
-      margin-left: 6px;
-      margin-top: 4px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 1rem;
 
-      strong {
+      strong,
+      span {
+        display: block;
         padding: 1px 3px;
         border-radius: 2px;
         background-color: #212427;
