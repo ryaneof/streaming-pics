@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { setAppTitle } from 'redux/modules/appTitle';
 import ga from 'react-ga';
-import config from '../../config';
 import Helmet from 'react-helmet';
 import {
   TwitterListsView,
@@ -30,7 +29,6 @@ export default class Lists extends Component {
   componentDidMount() {
     this.props.setAppTitle(`Lists of @${ this.props.params.userScreenName }`);
 
-    ga.initialize(config.gaTrackId);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 

@@ -38,7 +38,6 @@ export default class Landing extends Component {
 
     this.props.resetAppTitle();
 
-    ga.initialize(config.gaTrackId);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 

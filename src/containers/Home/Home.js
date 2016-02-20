@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import ga from 'react-ga';
-import config from '../../config';
+// import config from '../../config';
 import Helmet from 'react-helmet';
 import { setAppTitle } from 'redux/modules/appTitle';
 import { TwitterMediaView } from 'components';
@@ -26,7 +26,6 @@ export default class Home extends Component {
   componentDidMount = () => {
     this.props.setAppTitle('Home');
 
-    ga.initialize(config.gaTrackId);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 

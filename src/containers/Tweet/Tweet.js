@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import ga from 'react-ga';
-import config from '../../config';
 import Helmet from 'react-helmet';
 import {
   load as loadTweetInformation,
@@ -46,7 +45,6 @@ export default class Medium extends Component {
     });
     global.addEventListener('keydown', this.handleKeydownEvent);
 
-    ga.initialize(config.gaTrackId);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 

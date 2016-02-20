@@ -3,7 +3,6 @@ import Modal from 'react-bootstrap/lib/Modal';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import ga from 'react-ga';
-import config from '../../config';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { SVGIcon } from 'components';
@@ -65,7 +64,7 @@ export default class TwitterMediaModal extends Component {
         `Picture | @${ mediaItem.tweetIdStr }`,
         `/${ mediaItem.tweetUserScreenName }/status/${ mediaItem.tweetIdStr }/photo/${ mediaItem.mediumIdStr }`
       );
-      ga.initialize(config.gaTrackId);
+
       ga.modalview(`/${ mediaItem.tweetUserScreenName }/status/${ mediaItem.tweetIdStr }/photo/${ mediaItem.mediumIdStr }`);
     }
   }

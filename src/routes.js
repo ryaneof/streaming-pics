@@ -1,5 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
+// import ga from 'react-ga';
+// import config from './config';
 import {
   isLoaded as isAuthLoaded,
   load as loadAuth
@@ -50,7 +52,7 @@ export default (store) => {
   };
 
   return (
-    <Route path="/" component={ App } >
+    <Route path="/" component={ App }>
       { /* Landing route, redirect to /home if signed in */ }
       <IndexRoute component={ Landing } onEnter={ onEnterIndexRoute } />
       <Route path="about" component={ About }/>
