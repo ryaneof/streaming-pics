@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { routeActions } from 'react-router-redux';
 import ga from 'react-ga';
 import Helmet from 'react-helmet';
 import moment from 'moment';
@@ -19,7 +19,8 @@ import {
   {
     hideMediaModal,
     displayModalPreviousMedia,
-    displayModalNextMedia
+    displayModalNextMedia,
+    pushState: routeActions.push
   }
 )
 
@@ -30,7 +31,8 @@ export default class TwitterMediaModal extends Component {
     showModal: PropTypes.bool,
     hideMediaModal: PropTypes.func,
     displayModalPreviousMedia: PropTypes.func,
-    displayModalNextMedia: PropTypes.func
+    displayModalNextMedia: PropTypes.func,
+    pushState: PropTypes.func
   }
 
   componentDidMount() {
@@ -101,8 +103,20 @@ export default class TwitterMediaModal extends Component {
   }
 
   handleOpenUserRoute = (event) => {
+    const { mediaItem: { userScreenName }} = this.props;
     event.stopPropagation();
+    event.preventDefault();
+
+    if (global.history) {
+      global.history.pushState(
+        null,
+        `Media by @${ userScreenName }`,
+        `/${ userScreenName }`
+      );
+    }
+
     this.props.hideMediaModal();
+    this.props.pushState(`/${ userScreenName }`);
   }
 
   close = () => {
@@ -160,9 +174,9 @@ export default class TwitterMediaModal extends Component {
                   <img src={ mediaItem.userProfileImageURL } />
                 </p>
                 <p className={ styles.twitterMediaModalUserNameWrapper }>
-                  <Link to={ `/${ mediaItem.userScreenName }` } onClick={ this.handleOpenUserRoute }>
+                  <a href={ `/${ mediaItem.userScreenName }` } onClick={ this.handleOpenUserRoute }>
                     <span className={ styles.twitterMediaModalUserName }>{ mediaItem.userName }</span>
-                  </Link>
+                  </a>
                   <span className={ styles.twitterMediaModalUserScreenName }>@{ mediaItem.userScreenName }</span>
                 </p>
               </div>
