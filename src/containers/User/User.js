@@ -46,6 +46,10 @@ export default class User extends Component {
     return (authChanged || screenNameChanged);
   }
 
+  componentDidUpdate() {
+    ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
+  }
+
   render = () => {
     const styles = require('./User.scss');
     const { user } = this.props;
