@@ -61,6 +61,7 @@ export default class TwitterMediaView extends Component {
   componentDidMount = () => {
     this.initSocketClient(this.props.mediaViewParams);
     this.initScrollListener();
+    this.initBeforeUnloadListener();
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -220,6 +221,15 @@ export default class TwitterMediaView extends Component {
 
   initScrollListener = () => {
     global.addEventListener('scroll', this.handleScroll);
+  }
+
+  initBeforeUnloadListener = () => {
+    global.addEventListener('beforeunload', () => {
+      if (this.socketClient) {
+        this.socketClient.emit(this.props.disconnectTrigger);
+        this.socketClient = null;
+      }
+    });
   }
 
   render() {
