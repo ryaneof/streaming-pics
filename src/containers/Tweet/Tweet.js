@@ -132,6 +132,11 @@ export default class Medium extends Component {
     const videoStyle = global.innerHeight ? {
       maxHeight: global.innerHeight * 0.86
     } : {};
+
+    const tweetFavoriteClassName = tweet.isFavorited ?
+      `${ styles.tweetFavoriteCount } ${ styles.tweetFavoritedColor }` :
+      styles.tweetFavoriteCount;
+
     let tweetPrevClassName = '';
     let tweetNextClassName = '';
     let tweetCreatedTime;
@@ -171,8 +176,8 @@ export default class Medium extends Component {
               { tweet.tweetText }
             </p>
             <p className={ styles.tweetTweetMeta }>
-              <span className={ styles.tweetFavoriteCount }>
-                <SVGIcon iconName="like-dark" iconClass="iconLikeDark" />
+              <span className={ tweetFavoriteClassName }>
+                <SVGIcon iconName={ tweet.isFavorited ? 'like-pink' : 'like-dark' } iconClass="iconLike" />
                 { tweet.favoriteCount }
               </span>
               <a

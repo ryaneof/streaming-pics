@@ -62,7 +62,7 @@ export default class TwitterMediaItem extends Component {
               <span>{ mediaItem.userName }</span>
             </Link>
             <span className={ styles.twitterMediaItemFavoriteCount }>
-              <SVGIcon iconName="like" iconClass="iconLike" />
+              <SVGIcon iconName={ mediaItem.isFavorited ? 'like-pink' : 'like' } iconClass="iconLike" />
               { mediaItem.favoriteCount }
             </span>
           </p>

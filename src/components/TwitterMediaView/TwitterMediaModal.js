@@ -137,6 +137,9 @@ export default class TwitterMediaModal extends Component {
 
     const styles = require('./TwitterMediaModal.scss');
     const tweetCreatedTime = moment(mediaItem.tweetCreatedTime);
+    const twitterMediaModalFavoriteClassName = mediaItem.isFavorited ?
+    `${ styles.twitterMediaModalFavoriteCount } ${ styles.twitterFavoritedColor }` :
+      styles.twitterMediaModalFavoriteCount;
 
     const modalImageWrapperStyle = global.innerHeight ? {
       minHeight: global.innerHeight * 0.86
@@ -184,8 +187,11 @@ export default class TwitterMediaModal extends Component {
                 { mediaItem.tweetText }
               </p>
               <p className={ styles.twitterMediaModalTweetMeta }>
-                <span className={ styles.twitterMediaModalFavoriteCount }>
-                  <SVGIcon iconName="like-dark" iconClass="iconLikeDark" />
+                <span className={ twitterMediaModalFavoriteClassName }>
+                  <SVGIcon
+                    iconName={ mediaItem.isFavorited ? 'like-pink' : 'like-dark' }
+                    iconClass="iconLike"
+                  />
                   { mediaItem.favoriteCount }
                 </span>
                 <a
