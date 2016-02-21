@@ -87,6 +87,7 @@ export default class TwitterMediaView extends Component {
     this.loadPreviousMediaAttempt = 3;
 
     global.removeEventListener('scroll', this.handleScroll);
+    global.removeEventListener('beforeunload', this.handleBeforeUnload);
 
     if (this.socketClient) {
       this.socketClient.emit(this.props.disconnectTrigger);
@@ -98,6 +99,7 @@ export default class TwitterMediaView extends Component {
 
     this.initSocketClient(nextProps.mediaViewParams);
     this.initScrollListener();
+    this.initBeforeUnloadListener();
   }
 
   shouldComponentUpdate = (nextProps) => {
@@ -207,6 +209,13 @@ export default class TwitterMediaView extends Component {
     }
   }
 
+  handleBeforeUnload = () => {
+    if (this.socketClient) {
+      this.socketClient.emit(this.props.disconnectTrigger);
+      this.socketClient = null;
+    }
+  }
+
   initSocketClient = (mediaViewParams) => {
     this.props.initMedia();
 
@@ -224,12 +233,7 @@ export default class TwitterMediaView extends Component {
   }
 
   initBeforeUnloadListener = () => {
-    global.addEventListener('beforeunload', () => {
-      if (this.socketClient) {
-        this.socketClient.emit(this.props.disconnectTrigger);
-        this.socketClient = null;
-      }
-    });
+    global.addEventListener('beforeunload', this.handleBeforeUnload);
   }
 
   render() {
