@@ -21,6 +21,36 @@ const initialState = {
   modalMediaIndex: -1
 };
 
+const reCalculateModalMediaIndex = (currentState, upcomingMediaArr) => {
+  const {
+    showModal,
+    modalMediaItem,
+    modalMediaIndex
+  } = currentState;
+
+  let upcomingModalMediaIndex = modalMediaIndex;
+
+  if (!showModal) {
+    return {};
+  }
+
+  upcomingMediaArr.forEach((upcomingMediaItem, upcomingMediaIndex) => {
+    if (modalMediaItem.tweetIdStr === upcomingMediaItem.tweetIdStr &&
+        modalMediaItem.mediumIdStr === upcomingMediaItem.mediumIdStr) {
+      upcomingModalMediaIndex = upcomingMediaIndex;
+      return false;
+    }
+  });
+
+  // current media item might be deleted, we will do nothing about this situation.
+
+  return {
+    showModal,
+    modalMediaItem,
+    modalMediaIndex: upcomingModalMediaIndex
+  };
+};
+
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case INIT:
@@ -41,10 +71,12 @@ export default function reducer(state = initialState, action = {}) {
         error: action.error
       };
     case UNSHIFT:
+      const mediaArrAfterUnshift = action.mediaArr.concat(state.mediaArr);
+      const modalStateAfterUnshift = reCalculateModalMediaIndex(state, mediaArrAfterUnshift);
       return {
         ...state,
-        mediaArr: action.mediaArr.concat(state.mediaArr),
-        lastTweetId: state.lastTweetId,
+        ...modalStateAfterUnshift,
+        mediaArr: mediaArrAfterUnshift,
         loading: false,
         error: null
       };
@@ -76,11 +108,12 @@ export default function reducer(state = initialState, action = {}) {
       const filteredMediaArr = state.mediaArr.filter((mediaItem) => {
         return (mediaItem.tweetIdStr !== action.tweetIdStr);
       });
-
+      const modalStateAfterRemove = reCalculateModalMediaIndex(state, filteredMediaArr);
       const filteredMediaArrLastTweetId = (filteredMediaArr.length > 0) ? filteredMediaArr[filteredMediaArr.length - 1].tweetIdStr : null;
 
       return {
         ...state,
+        ...modalStateAfterRemove,
         mediaArr: filteredMediaArr,
         lastTweetId: filteredMediaArrLastTweetId,
         loading: false,
