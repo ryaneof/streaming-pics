@@ -4,6 +4,7 @@ import ga from 'react-ga';
 import { connect } from 'react-redux';
 import config from '../../config';
 import Helmet from 'react-helmet';
+import { routeActions } from 'react-router-redux';
 import {
   resetAppTitle
 } from 'redux/modules/appTitle';
@@ -16,7 +17,8 @@ import { SVGIcon } from 'components';
     location: state.routing.location
   }),
   {
-    resetAppTitle
+    resetAppTitle,
+    pushState: routeActions.push
   }
 )
 
@@ -25,8 +27,15 @@ export default class Landing extends Component {
     user: PropTypes.object,
     appTitle: PropTypes.object,
     location: PropTypes.object,
-    resetAppTitle: PropTypes.func
+    resetAppTitle: PropTypes.func,
+    pushState: PropTypes.func
   };
+
+  componentWillMount() {
+    if (this.props.user) {
+      this.props.pushState('/home');
+    }
+  }
 
   componentDidMount() {
     const elLandingWrapper = ReactDOM.findDOMNode(this.refs.landingWrapper);
