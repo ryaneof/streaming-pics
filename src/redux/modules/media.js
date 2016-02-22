@@ -10,12 +10,12 @@ const DISPLAY_MODAL = 'StreamingPics/media/DISPLAY_MODAL';
 const DISPLAY_MODAL_PREVIOUS_MEDIUM = 'StreamingPics/media/DISPLAY_MODAL_PREVIOUS_MEDIUM';
 const DISPLAY_MODAL_NEXT_MEDIUM = 'StreamingPics/media/DISPLAY_MODAL_NEXT_MEDIUM';
 const HIDE_MODAL = 'StreamingPics/media/HIDE_MODAL';
-const FAVORITE_MODAL_MEDIA_ITEM = 'StreamingPics/media/FAVORITE_MODAL_MEDIA_ITEM';
-const FAVORITE_MODAL_MEDIA_ITEM_SUCCESS = 'StreamingPics/media/FAVORITE_MODAL_MEDIA_ITEM_SUCCESS';
-const FAVORITE_MODAL_MEDIA_ITEM_FAILED = 'StreamingPics/media/FAVORITE_MODAL_MEDIA_ITEM_FAILED';
-const UNFAVORITE_MODAL_MEDIA_ITEM = 'StreamingPics/media/UNFAVORITE_MODAL_MEDIA_ITEM';
-const UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS = 'StreamingPics/media/UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS';
-const UNFAVORITE_MODAL_MEDIA_ITEM_FAILED = 'StreamingPics/media/UNFAVORITE_MODAL_MEDIA_ITEM_FAILED';
+const FAVORITE_MEDIA_ITEM = 'StreamingPics/media/FAVORITE_MEDIA_ITEM';
+const FAVORITE_MEDIA_ITEM_SUCCESS = 'StreamingPics/media/FAVORITE_MEDIA_ITEM_SUCCESS';
+const FAVORITE_MEDIA_ITEM_FAILED = 'StreamingPics/media/FAVORITE_MEDIA_ITEM_FAILED';
+const UNFAVORITE_MEDIA_ITEM = 'StreamingPics/media/UNFAVORITE_MEDIA_ITEM';
+const UNFAVORITE_MEDIA_ITEM_SUCCESS = 'StreamingPics/media/UNFAVORITE_MEDIA_ITEM_SUCCESS';
+const UNFAVORITE_MEDIA_ITEM_FAILED = 'StreamingPics/media/UNFAVORITE_MEDIA_ITEM_FAILED';
 
 const initialState = {
   loading: true,
@@ -160,15 +160,17 @@ export default function reducer(state = initialState, action = {}) {
         modalMediaIndex: -1,
         error: null
       };
-    case FAVORITE_MODAL_MEDIA_ITEM:
+    case FAVORITE_MEDIA_ITEM:
+      const modalMediaItemAfterFavorite = state.modalMediaItem ? {
+        ...state.modalMediaItem,
+        isFavorited: true
+      } : null;
+
       return {
         ...state,
-        modalMediaItem: {
-          ...state.modalMediaItem,
-          isFavorited: true
-        }
+        modalMediaItem: modalMediaItemAfterFavorite
       };
-    case FAVORITE_MODAL_MEDIA_ITEM_SUCCESS:
+    case FAVORITE_MEDIA_ITEM_SUCCESS:
       const favoritedActionResult = action.result;
       const favoritedTweetIdStr = favoritedActionResult.tweetIdStr;
       const updatedMediaArrWithFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
@@ -178,32 +180,37 @@ export default function reducer(state = initialState, action = {}) {
         }
         return mediaItem;
       });
+      const modalMediaItemAfterFavoriteSuccess = state.modalMediaItem ? {
+        ...state.modalMediaItem,
+        favoriteCount: favoritedActionResult.favoriteCount
+      } : null;
 
       return {
         ...state,
         mediaArr: updatedMediaArrWithFavoritedTweetIdStr,
-        modalMediaItem: {
-          ...state.modalMediaItem,
-          favoriteCount: favoritedActionResult.favoriteCount
-        }
+        modalMediaItem: modalMediaItemAfterFavoriteSuccess
       };
-    case FAVORITE_MODAL_MEDIA_ITEM_FAILED:
+    case FAVORITE_MEDIA_ITEM_FAILED:
+      const modalMediaItemAfterFavoriteFailed = state.modalMediaItem ? {
+        ...state.modalMediaItem,
+        isFavorited: false
+      } : null;
+
       return {
         ...state,
-        modalMediaItem: {
-          ...state.modalMediaItem,
-          isFavorited: false
-        }
+        modalMediaItem: modalMediaItemAfterFavoriteFailed
       };
-    case UNFAVORITE_MODAL_MEDIA_ITEM:
+    case UNFAVORITE_MEDIA_ITEM:
+      const modalMediaItemAfterUnFavorite = state.modalMediaItem ? {
+        ...state.modalMediaItem,
+        isFavorited: false
+      } : null;
+
       return {
         ...state,
-        modalMediaItem: {
-          ...state.modalMediaItem,
-          isFavorited: false
-        }
+        modalMediaItem: modalMediaItemAfterUnFavorite
       };
-    case UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS:
+    case UNFAVORITE_MEDIA_ITEM_SUCCESS:
       const unfavoritedActionResult = action.result;
       const unfavoritedTweetIdStr = unfavoritedActionResult.tweetIdStr;
       const updatedMediaArrWithUnFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
@@ -213,22 +220,25 @@ export default function reducer(state = initialState, action = {}) {
         }
         return mediaItem;
       });
+      const modalMediaItemAfterUnFavoriteSuccess = state.modalMediaItem ? {
+        ...state.modalMediaItem,
+        favoriteCount: unfavoritedActionResult.favoriteCount
+      } : null;
 
       return {
         ...state,
         mediaArr: updatedMediaArrWithUnFavoritedTweetIdStr,
-        modalMediaItem: {
-          ...state.modalMediaItem,
-          favoriteCount: unfavoritedActionResult.favoriteCount
-        }
+        modalMediaItem: modalMediaItemAfterUnFavoriteSuccess
       };
-    case UNFAVORITE_MODAL_MEDIA_ITEM_FAILED:
+    case UNFAVORITE_MEDIA_ITEM_FAILED:
+      const modalMediaItemAfterUnFavoriteFailed = state.modalMediaItem ? {
+        ...state.modalMediaItem,
+        isFavorited: true
+      } : null;
+
       return {
         ...state,
-        modalMediaItem: {
-          ...state.modalMediaItem,
-          isFavorited: true
-        }
+        modalMediaItem: modalMediaItemAfterUnFavoriteFailed
       };
     default:
       return state;
@@ -316,12 +326,12 @@ export function displayModalNextMedia() {
   };
 }
 
-export function favoriteModalMediaItem(tweetIdStr) {
+export function favoriteMediaItem(tweetIdStr) {
   return {
     types: [
-      FAVORITE_MODAL_MEDIA_ITEM,
-      FAVORITE_MODAL_MEDIA_ITEM_SUCCESS,
-      FAVORITE_MODAL_MEDIA_ITEM_FAILED
+      FAVORITE_MEDIA_ITEM,
+      FAVORITE_MEDIA_ITEM_SUCCESS,
+      FAVORITE_MEDIA_ITEM_FAILED
     ],
     promise: (client) => client.post('/createFavoriteTweet', {
       data: {
@@ -331,12 +341,12 @@ export function favoriteModalMediaItem(tweetIdStr) {
   };
 }
 
-export function unFavoriteModalMediaItem(tweetIdStr) {
+export function unFavoriteMediaItem(tweetIdStr) {
   return {
     types: [
-      UNFAVORITE_MODAL_MEDIA_ITEM,
-      UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS,
-      UNFAVORITE_MODAL_MEDIA_ITEM_FAILED
+      UNFAVORITE_MEDIA_ITEM,
+      UNFAVORITE_MEDIA_ITEM_SUCCESS,
+      UNFAVORITE_MEDIA_ITEM_FAILED
     ],
     promise: (client) => client.post('/destroyFavoriteTweet', {
       data: {

@@ -10,8 +10,8 @@ import {
   hideMediaModal,
   displayModalPreviousMedia,
   displayModalNextMedia,
-  favoriteModalMediaItem,
-  unFavoriteModalMediaItem
+  favoriteMediaItem,
+  unFavoriteMediaItem
 } from 'redux/modules/media';
 
 @connect(
@@ -22,8 +22,8 @@ import {
     hideMediaModal,
     displayModalPreviousMedia,
     displayModalNextMedia,
-    favoriteModalMediaItem,
-    unFavoriteModalMediaItem,
+    favoriteMediaItem,
+    unFavoriteMediaItem,
     pushState: routeActions.push
   }
 )
@@ -36,8 +36,8 @@ export default class TwitterMediaModal extends Component {
     hideMediaModal: PropTypes.func,
     displayModalPreviousMedia: PropTypes.func,
     displayModalNextMedia: PropTypes.func,
-    favoriteModalMediaItem: PropTypes.func,
-    unFavoriteModalMediaItem: PropTypes.func,
+    favoriteMediaItem: PropTypes.func,
+    unFavoriteMediaItem: PropTypes.func,
     pushState: PropTypes.func
   }
 
@@ -132,9 +132,9 @@ export default class TwitterMediaModal extends Component {
     event.stopPropagation();
 
     if (!isFavorited) {
-      this.props.favoriteModalMediaItem(tweetIdStr);
+      this.props.favoriteMediaItem(tweetIdStr);
     } else {
-      this.props.unFavoriteModalMediaItem(tweetIdStr);
+      this.props.unFavoriteMediaItem(tweetIdStr);
     }
   }
 
