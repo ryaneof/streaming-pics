@@ -10,6 +10,12 @@ const DISPLAY_MODAL = 'StreamingPics/media/DISPLAY_MODAL';
 const DISPLAY_MODAL_PREVIOUS_MEDIUM = 'StreamingPics/media/DISPLAY_MODAL_PREVIOUS_MEDIUM';
 const DISPLAY_MODAL_NEXT_MEDIUM = 'StreamingPics/media/DISPLAY_MODAL_NEXT_MEDIUM';
 const HIDE_MODAL = 'StreamingPics/media/HIDE_MODAL';
+const FAVORITE_MODAL_MEDIA_ITEM = 'StreamingPics/media/FAVORITE_MODAL_MEDIA_ITEM';
+const FAVORITE_MODAL_MEDIA_ITEM_SUCCESS = 'StreamingPics/media/FAVORITE_MODAL_MEDIA_ITEM_SUCCESS';
+const FAVORITE_MODAL_MEDIA_ITEM_FAILED = 'StreamingPics/media/FAVORITE_MODAL_MEDIA_ITEM_FAILED';
+const UNFAVORITE_MODAL_MEDIA_ITEM = 'StreamingPics/media/UNFAVORITE_MODAL_MEDIA_ITEM';
+const UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS = 'StreamingPics/media/UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS';
+const UNFAVORITE_MODAL_MEDIA_ITEM_FAILED = 'StreamingPics/media/UNFAVORITE_MODAL_MEDIA_ITEM_FAILED';
 
 const initialState = {
   loading: true,
@@ -154,6 +160,76 @@ export default function reducer(state = initialState, action = {}) {
         modalMediaIndex: -1,
         error: null
       };
+    case FAVORITE_MODAL_MEDIA_ITEM:
+      return {
+        ...state,
+        modalMediaItem: {
+          ...state.modalMediaItem,
+          isFavorited: true
+        }
+      };
+    case FAVORITE_MODAL_MEDIA_ITEM_SUCCESS:
+      const favoritedActionResult = action.result;
+      const favoritedTweetIdStr = favoritedActionResult.tweetIdStr;
+      const updatedMediaArrWithFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
+        if (mediaItem.tweetIdStr === favoritedTweetIdStr) {
+          mediaItem.isFavorited = true;
+          mediaItem.favoriteCount = favoritedActionResult.favoriteCount;
+        }
+        return mediaItem;
+      });
+
+      return {
+        ...state,
+        mediaArr: updatedMediaArrWithFavoritedTweetIdStr,
+        modalMediaItem: {
+          ...state.modalMediaItem,
+          favoriteCount: favoritedActionResult.favoriteCount
+        }
+      };
+    case FAVORITE_MODAL_MEDIA_ITEM_FAILED:
+      return {
+        ...state,
+        modalMediaItem: {
+          ...state.modalMediaItem,
+          isFavorited: false
+        }
+      };
+    case UNFAVORITE_MODAL_MEDIA_ITEM:
+      return {
+        ...state,
+        modalMediaItem: {
+          ...state.modalMediaItem,
+          isFavorited: false
+        }
+      };
+    case UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS:
+      const unfavoritedActionResult = action.result;
+      const unfavoritedTweetIdStr = unfavoritedActionResult.tweetIdStr;
+      const updatedMediaArrWithUnFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
+        if (mediaItem.tweetIdStr === unfavoritedTweetIdStr) {
+          mediaItem.isFavorited = false;
+          mediaItem.favoriteCount = unfavoritedActionResult.favoriteCount;
+        }
+        return mediaItem;
+      });
+
+      return {
+        ...state,
+        mediaArr: updatedMediaArrWithUnFavoritedTweetIdStr,
+        modalMediaItem: {
+          ...state.modalMediaItem,
+          favoriteCount: unfavoritedActionResult.favoriteCount
+        }
+      };
+    case UNFAVORITE_MODAL_MEDIA_ITEM_FAILED:
+      return {
+        ...state,
+        modalMediaItem: {
+          ...state.modalMediaItem,
+          isFavorited: true
+        }
+      };
     default:
       return state;
   }
@@ -237,5 +313,35 @@ export function displayModalPreviousMedia() {
 export function displayModalNextMedia() {
   return {
     type: DISPLAY_MODAL_NEXT_MEDIUM
+  };
+}
+
+export function favoriteModalMediaItem(tweetIdStr) {
+  return {
+    types: [
+      FAVORITE_MODAL_MEDIA_ITEM,
+      FAVORITE_MODAL_MEDIA_ITEM_SUCCESS,
+      FAVORITE_MODAL_MEDIA_ITEM_FAILED
+    ],
+    promise: (client) => client.post('/createFavoriteTweet', {
+      data: {
+        tweetIdStr
+      }
+    })
+  };
+}
+
+export function unFavoriteModalMediaItem(tweetIdStr) {
+  return {
+    types: [
+      UNFAVORITE_MODAL_MEDIA_ITEM,
+      UNFAVORITE_MODAL_MEDIA_ITEM_SUCCESS,
+      UNFAVORITE_MODAL_MEDIA_ITEM_FAILED
+    ],
+    promise: (client) => client.post('/destroyFavoriteTweet', {
+      data: {
+        tweetIdStr
+      }
+    })
   };
 }

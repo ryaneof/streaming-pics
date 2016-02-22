@@ -112,7 +112,9 @@ export default class TwitterMediaView extends Component {
     const modalStateChanged = (upcomingMedia.showModal !== currentMedia.showModal);
     const modalMediaItemChanged = (upcomingMedia.showModal && currentMedia.showModal &&
       (upcomingMedia.modalMediaItem.mediumIdStr !== currentMedia.modalMediaItem.mediumIdStr ||
-        upcomingMedia.modalMediaItem.tweetIdStr !== currentMedia.modalMediaItem.tweetIdStr));
+        upcomingMedia.modalMediaItem.tweetIdStr !== currentMedia.modalMediaItem.tweetIdStr ||
+        upcomingMedia.modalMediaItem.isFavorited !== currentMedia.modalMediaItem.isFavorited ||
+        upcomingMedia.modalMediaItem.favoriteCount !== currentMedia.modalMediaItem.favoriteCount));
     // console.log(pathNameChanged, mediaArrChanged, mediaStateChanged, modalStateChanged, modalMediaItemChanged);
     return (pathNameChanged || mediaArrChanged || mediaStateChanged || modalStateChanged || modalMediaItemChanged);
   }

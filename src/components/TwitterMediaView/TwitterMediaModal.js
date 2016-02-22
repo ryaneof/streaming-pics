@@ -9,7 +9,9 @@ import { SVGIcon } from 'components';
 import {
   hideMediaModal,
   displayModalPreviousMedia,
-  displayModalNextMedia
+  displayModalNextMedia,
+  favoriteModalMediaItem,
+  unFavoriteModalMediaItem
 } from 'redux/modules/media';
 
 @connect(
@@ -20,6 +22,8 @@ import {
     hideMediaModal,
     displayModalPreviousMedia,
     displayModalNextMedia,
+    favoriteModalMediaItem,
+    unFavoriteModalMediaItem,
     pushState: routeActions.push
   }
 )
@@ -32,6 +36,8 @@ export default class TwitterMediaModal extends Component {
     hideMediaModal: PropTypes.func,
     displayModalPreviousMedia: PropTypes.func,
     displayModalNextMedia: PropTypes.func,
+    favoriteModalMediaItem: PropTypes.func,
+    unFavoriteModalMediaItem: PropTypes.func,
     pushState: PropTypes.func
   }
 
@@ -53,7 +59,9 @@ export default class TwitterMediaModal extends Component {
     }
 
     return (currentMediaItem.tweetIdStr !== upcomingMediaItem.tweetIdStr ||
-      currentMediaItem.mediumIdStr !== upcomingMediaItem.mediumIdStr);
+      currentMediaItem.mediumIdStr !== upcomingMediaItem.mediumIdStr ||
+      currentMediaItem.isFavorited !== upcomingMediaItem.isFavorited ||
+      currentMediaItem.favoriteCount !== upcomingMediaItem.favoriteCount);
   }
 
   componentDidUpdate = () => {
@@ -117,6 +125,17 @@ export default class TwitterMediaModal extends Component {
 
     this.props.hideMediaModal();
     this.props.pushState(`/${ userScreenName }`);
+  }
+
+  handleClickedModalLikeIcon = (event) => {
+    const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
+    event.stopPropagation();
+
+    if (!isFavorited) {
+      this.props.favoriteModalMediaItem(tweetIdStr);
+    } else {
+      this.props.unFavoriteModalMediaItem(tweetIdStr);
+    }
   }
 
   close = () => {
@@ -187,7 +206,7 @@ export default class TwitterMediaModal extends Component {
                 { mediaItem.tweetText }
               </p>
               <p className={ styles.twitterMediaModalTweetMeta }>
-                <span className={ twitterMediaModalFavoriteClassName }>
+                <span className={ twitterMediaModalFavoriteClassName } onClick={ this.handleClickedModalLikeIcon }>
                   <SVGIcon
                     iconName={ mediaItem.isFavorited ? 'like-pink' : 'like-dark' }
                     iconClass="iconLike"
