@@ -1,5 +1,9 @@
 # [Streaming Pics](https://streaming.pics)
 
+[![build status](https://img.shields.io/travis/ryaneof/streaming-pics/master.svg?style=flat-square)](https://travis-ci.org/ryaneof/streaming-pics)
+[![Dependency Status](https://david-dm.org/ryaneof/streaming-pics.svg?style=flat-square)](https://david-dm.org/ryaneof/streaming-pics)
+[![devDependency Status](https://david-dm.org/ryaneof/streaming-pics/dev-status.svg?style=flat-square)](https://david-dm.org/ryaneof/streaming-pics#info=devDependencies)
+
 A simpler media timeline for Twitter.
 
 ## Requirements
@@ -52,5 +56,5 @@ npm build && npm start
 
 # Acknowledgements
 
-- Quite a lot of the code (mostly scaffold part) in this repo, came from [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example)
+- Quite a lot of the code (mostly scaffold part) in this repo, came from [react-redux-universal-hot-example](https://github.com/ryaneof/streaming-pics)
 - All the icons except the logo came from [evil-icons](http://evil-icons.io/)
