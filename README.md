@@ -6,6 +6,15 @@
 
 A simpler media timeline for Twitter.
 
+## Features
+
+- Display media from authenticated user's timeline (realtime).
+- Display media from posted or liked tweets by a Twitter user.
+- Display media from tweets in a public Twitter list.
+- Display photos from tweets which contain an Instagram photo link.
+- Like & Unlike a tweet.
+- Support images, GIFs and videos uploaded from Twitter official clients.
+
 ## Requirements
 
 - Node v5.6.0
@@ -41,14 +50,22 @@ GOOGLE_ANALYTICS_TRACKING_ID
 ```sh
 npm install
 
-### Development
+# Development
 
 npm run dev
 
-### Production
+# Production
 
 npm build && npm start
 ```
+
+## Contributing
+
+Contributors are always welcome!
+
+If you have some awesome idea about the feature, please submit an issue first.
+
+If you want to fix something, please make sure the code would pass `npm run lint` checks and the basic test specs before sending the PR.
 
 # License
 

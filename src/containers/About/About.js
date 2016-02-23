@@ -43,11 +43,12 @@ export default class About extends Component {
             </p>
             <p>Streaming Pics is still in beta. Here're some available features:</p>
             <ul>
-              <li>Support images, GIFs and videos uploaded from Twitter official clients.</li>
+              <li>Display media from authenticated user's timeline (realtime).</li>
               <li>Display media from posted or liked tweets by a Twitter user.</li>
               <li>Display media from tweets in a public Twitter list.</li>
-              <li>Display media from authenticated user's timeline (realtime).</li>
-              <li>Display photos from tweets which contain an Instagram media link.</li>
+              <li>Display photos from tweets which contain an Instagram photo link.</li>
+              <li>Like & Unlike a tweet.</li>
+              <li>Support images, GIFs and videos uploaded from Twitter official clients.</li>
             </ul>
             <p>
               If you have any questions, feel free to contact
