@@ -12,8 +12,6 @@ export default function loadListItems(req) {
       return reject('cannot get authenticated twitter user');
     }
 
-    // console.log('req.body', req.body);
-
     return getListItems(user, req.body.listRelation, {
       userScreenName: req.body.userScreenName,
       nextCursorStr: req.body.nextCursorStr
@@ -23,6 +21,6 @@ export default function loadListItems(req) {
     })
     .catch((error) => {
       reject(error);
-    })
+    });
   });
 }

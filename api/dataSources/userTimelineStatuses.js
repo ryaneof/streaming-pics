@@ -1,16 +1,12 @@
-import Twit from 'twit';
-import nconf from 'nconf';
 import { extractTweetMedia } from '../utils/tweetHandler';
 import { createTwitClient } from '../utils/twitClient';
-
-nconf.env();
 
 export default function userTimelineStatuses(socket, userScreenName) {
   let user;
 
   try {
     user = socket.handshake.session.passport.user;
-  } catch (e) {
+  } catch (err) {
     user = null;
   }
 
@@ -24,12 +20,12 @@ export default function userTimelineStatuses(socket, userScreenName) {
     return;
   }
 
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
 
   // Streaming API won't display protected users' statuses
   // userTimelineStatusesSocket = T.stream('statuses/filter', { follow: '' });
 
-  T.get('statuses/user_timeline', {
+  twitClient.get('statuses/user_timeline', {
     count: 100,
     screen_name: userScreenName,
     include_rts: true
@@ -63,7 +59,7 @@ export default function userTimelineStatuses(socket, userScreenName) {
     const lastTweet = data[data.length - 1];
 
     data.forEach((tweet) => {
-      let mediaArr = extractTweetMedia(tweet);
+      const mediaArr = extractTweetMedia(tweet);
 
       if (mediaArr.length > 0) {
         media = media.concat(mediaArr);
@@ -85,7 +81,7 @@ export default function userTimelineStatuses(socket, userScreenName) {
       return;
     }
 
-    T.get('statuses/user_timeline', {
+    twitClient.get('statuses/user_timeline', {
       count: 100,
       screen_name: userScreenName,
       include_rts: true,
@@ -112,19 +108,18 @@ export default function userTimelineStatuses(socket, userScreenName) {
       }
 
       const { headers } = response;
-      console.info(`==> 😍  got previous timeline of @${ userScreenName } since ${ maxTweetId }. on ${ headers.date }, rate limit remaining: ${ headers['x-rate-limit-remaining'] }`);
-
-      let media = [];
-
       const lastTweet = data[data.length - 1];
       const firstTweet = data[0];
+      let media = [];
+
+      console.info(`==> 😍  got previous timeline of @${ userScreenName } since ${ maxTweetId }. on ${ headers.date }, rate limit remaining: ${ headers['x-rate-limit-remaining'] }`);
 
       if (firstTweet.id === maxTweetId) {
         data.shift();
       }
 
       data.forEach((tweet) => {
-        let mediaArr = extractTweetMedia(tweet);
+        const mediaArr = extractTweetMedia(tweet);
 
         if (mediaArr.length > 0) {
           media = media.concat(mediaArr);
@@ -135,6 +130,6 @@ export default function userTimelineStatuses(socket, userScreenName) {
         media: media,
         lastTweetId: lastTweet.id
       });
-    })
+    });
   });
 }

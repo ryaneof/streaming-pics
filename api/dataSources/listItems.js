@@ -11,10 +11,10 @@ export default function getListItems(user, listRelation, listItemsParams) {
     return Promise.reject('invalid list relation');
   }
 
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
 
   return new Promise((resolve, reject) => {
-    T.get(listRelationEndpointMap[listRelation], {
+    twitClient.get(listRelationEndpointMap[listRelation], {
       screen_name: listItemsParams.userScreenName,
       count: 20,
       cursor: listItemsParams.nextCursorStr
@@ -24,12 +24,12 @@ export default function getListItems(user, listRelation, listItemsParams) {
         return reject(err);
       }
 
-      let listItems = {};
+      const listItems = {};
 
       listItems.previousCursorStr = data.previous_cursor_str;
       listItems.listsArr = data.lists.map((listItemData) => {
         const listOwner = listItemData.user;
-        let listItem = {};
+        const listItem = {};
 
         listItem.listIdStr = listItemData.id_str;
         listItem.listName = listItemData.name;

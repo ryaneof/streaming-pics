@@ -8,15 +8,14 @@ export function extractTweetMedia(tweet) {
   }
 
   const user = status.user;
+  const thirdPartyServiceMediaURLArr = [];
+  const twitterMediaArr = [];
+  const containsExtendedMediaEntities = (status.extended_entities && status.extended_entities.media && status.extended_entities.media.length > 0);
 
   let mediaArr = [];
-  let thirdPartyServiceMediaURLArr = [];
-  let twitterMediaArr = [];
-  let containsExtendedMediaEntities = (status.extended_entities && status.extended_entities.media && status.extended_entities.media.length > 0);
 
   if (containsExtendedMediaEntities) {
     status.extended_entities.media.forEach((extendedMediaItem) => {
-
       switch (extendedMediaItem.type) {
         case 'photo':
           twitterMediaArr.push({
@@ -82,8 +81,8 @@ export function extractTweetMedia(tweet) {
 
   // filter third party potential image from tweet url entities
   status.entities.urls.forEach((entitiesURLItem, entitiesURLIndex) => {
-    let expandedURL = entitiesURLItem.expanded_url;
-    let instagramMatchResult = expandedURL.match(/instagram.com\/p\/(.*)/);
+    const expandedURL = entitiesURLItem.expanded_url;
+    const instagramMatchResult = expandedURL.match(/instagram.com\/p\/(.*)/);
 
     if (instagramMatchResult && instagramMatchResult[1]) {
       thirdPartyServiceMediaURLArr.push({
@@ -108,7 +107,7 @@ export function extractTweetMedia(tweet) {
     mediaItem.tweetUserScreenName = tweet.user.screen_name;
     // mediaItem.tweetUserIdStr = tweet.user.id_str;
     mediaItem.tweetURL = `https://twitter.com/${ tweet.user.screen_name }/status/${ tweet.id_str }`;
-    mediaItem.userScreenName =  user.screen_name;
+    mediaItem.userScreenName = user.screen_name;
     mediaItem.userProfileImageURL = user.profile_image_url_https.replace(/\_normal/, '_bigger');
     mediaItem.userName = user.name;
     mediaItem.userIdStr = user.id_str;

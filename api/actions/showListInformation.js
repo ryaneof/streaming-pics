@@ -21,6 +21,6 @@ export default function showListInformation(req) {
     })
     .catch((error) => {
       reject(error);
-    })
+    });
   });
 }

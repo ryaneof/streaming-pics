@@ -20,6 +20,6 @@ export default function destroyFavoriteTweet(req) {
     })
     .catch((error) => {
       reject(error);
-    })
+    });
   });
 }

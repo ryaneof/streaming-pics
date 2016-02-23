@@ -12,8 +12,6 @@ export default function showUserProfile(req) {
       return reject('cannot get authenticated twitter user');
     }
 
-    // console.log('req.body', req.body);
-
     return getUserProfile(user, {
       screenName: req.body.screenName
     })
@@ -22,6 +20,6 @@ export default function showUserProfile(req) {
     })
     .catch((error) => {
       reject(error);
-    })
+    });
   });
 }

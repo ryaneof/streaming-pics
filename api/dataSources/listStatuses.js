@@ -1,16 +1,12 @@
-import Twit from 'twit';
-import nconf from 'nconf';
 import { extractTweetMedia } from '../utils/tweetHandler';
 import { createTwitClient } from '../utils/twitClient';
-
-nconf.env();
 
 export default function listStatuses(socket, listStatusesParams) {
   let user;
 
   try {
     user = socket.handshake.session.passport.user;
-  } catch (e) {
+  } catch (err) {
     user = null;
   }
 
@@ -24,10 +20,10 @@ export default function listStatuses(socket, listStatusesParams) {
     return;
   }
 
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
   const { userScreenName, listSlug } = listStatusesParams;
 
-  T.get('lists/statuses', {
+  twitClient.get('lists/statuses', {
     count: 100,
     owner_screen_name: userScreenName,
     slug: listSlug,
@@ -62,7 +58,7 @@ export default function listStatuses(socket, listStatusesParams) {
     const lastTweet = data[data.length - 1];
 
     data.forEach((tweet) => {
-      let mediaArr = extractTweetMedia(tweet);
+      const mediaArr = extractTweetMedia(tweet);
 
       if (mediaArr.length > 0) {
         media = media.concat(mediaArr);
@@ -84,7 +80,7 @@ export default function listStatuses(socket, listStatusesParams) {
       return;
     }
 
-    T.get('lists/statuses', {
+    twitClient.get('lists/statuses', {
       count: 100,
       owner_screen_name: userScreenName,
       slug: listSlug,
@@ -123,7 +119,7 @@ export default function listStatuses(socket, listStatusesParams) {
       }
 
       data.forEach((tweet) => {
-        let mediaArr = extractTweetMedia(tweet);
+        const mediaArr = extractTweetMedia(tweet);
 
         if (mediaArr.length > 0) {
           media = media.concat(mediaArr);
@@ -134,6 +130,6 @@ export default function listStatuses(socket, listStatusesParams) {
         media: media,
         lastTweetId: lastTweet.id
       });
-    })
+    });
   });
 }

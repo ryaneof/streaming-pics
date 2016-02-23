@@ -2,11 +2,11 @@ import { createTwitClient } from '../utils/twitClient';
 import { extractTweetMedia } from '../utils/tweetHandler';
 
 export default function getTweetDetail(user, tweetParams) {
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
   const { tweetIdStr, mediumIdStr } = tweetParams;
 
   return new Promise((resolve, reject) => {
-    T.get('statuses/show', {
+    twitClient.get('statuses/show', {
       id: tweetIdStr,
       trim_user: false,
       include_my_retweet: true,
@@ -17,7 +17,7 @@ export default function getTweetDetail(user, tweetParams) {
         return reject(err);
       }
 
-      let tweet = {};
+      const tweet = {};
       let currentMedium = null;
       let currentMediumIndex = -1;
 

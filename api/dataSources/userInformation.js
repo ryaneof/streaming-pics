@@ -1,10 +1,10 @@
 import { createTwitClient } from '../utils/twitClient';
 
 export default function getUserProfile(user, showUserProfile) {
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
 
   return new Promise((resolve, reject) => {
-    T.get('users/show', {
+    twitClient.get('users/show', {
       screen_name: showUserProfile.screenName
     }, (err, data, response) => {
       if (err) {
@@ -12,7 +12,7 @@ export default function getUserProfile(user, showUserProfile) {
         return reject(err);
       }
 
-      let profile = {};
+      const profile = {};
 
       // console.log(data);
 

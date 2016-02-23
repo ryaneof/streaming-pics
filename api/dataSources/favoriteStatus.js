@@ -1,10 +1,10 @@
 import { createTwitClient } from '../utils/twitClient';
 
 export function createFavoriteStatus(user, favoriteStatusParams) {
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
 
   return new Promise((resolve, reject) => {
-    T.post('favorites/create', {
+    twitClient.post('favorites/create', {
       id: favoriteStatusParams.tweetIdStr,
       include_entities: false
     }, (err, data, response) => {
@@ -13,7 +13,7 @@ export function createFavoriteStatus(user, favoriteStatusParams) {
         return reject(err);
       }
 
-      let tweet = {};
+      const tweet = {};
 
       tweet.isFavorited = data.favorited;
       tweet.tweetIdStr = data.id_str;
@@ -25,10 +25,10 @@ export function createFavoriteStatus(user, favoriteStatusParams) {
 }
 
 export function destroyFavoriteStatus(user, favoriteStatusParams) {
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
 
   return new Promise((resolve, reject) => {
-    T.post('favorites/destroy', {
+    twitClient.post('favorites/destroy', {
       id: favoriteStatusParams.tweetIdStr,
       include_entities: false
     }, (err, data, response) => {
@@ -37,7 +37,7 @@ export function destroyFavoriteStatus(user, favoriteStatusParams) {
         return reject(err);
       }
 
-      let tweet = {};
+      const tweet = {};
 
       tweet.isFavorited = data.favorited;
       tweet.tweetIdStr = data.id_str;
