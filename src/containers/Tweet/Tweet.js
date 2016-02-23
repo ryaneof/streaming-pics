@@ -7,7 +7,9 @@ import {
   load as loadTweetInformation,
   reset as resetTweetInformation,
   displayPreviousMedium,
-  displayNextMedium
+  displayNextMedium,
+  favoriteTweet,
+  unFavoriteTweet
 } from 'redux/modules/tweetInformation';
 import moment from 'moment';
 import { SVGIcon, LoadingIcon } from 'components';
@@ -21,7 +23,9 @@ import { SVGIcon, LoadingIcon } from 'components';
     loadTweetInformation,
     resetTweetInformation,
     displayPreviousMedium,
-    displayNextMedium
+    displayNextMedium,
+    favoriteTweet,
+    unFavoriteTweet
   }
 )
 
@@ -34,7 +38,9 @@ export default class Medium extends Component {
     loadTweetInformation: PropTypes.func,
     resetTweetInformation: PropTypes.func,
     displayPreviousMedium: PropTypes.func,
-    displayNextMedium: PropTypes.func
+    displayNextMedium: PropTypes.func,
+    favoriteTweet: PropTypes.func,
+    unFavoriteTweet: PropTypes.func
   }
 
   componentDidMount = () => {
@@ -124,6 +130,17 @@ export default class Medium extends Component {
     }
   }
 
+  handleClickedLikeIcon = (event) => {
+    const { tweet: { isFavorited, tweetIdStr }} = this.props.tweetInformation;
+    event.stopPropagation();
+
+    if (!isFavorited) {
+      this.props.favoriteTweet(tweetIdStr);
+    } else {
+      this.props.unFavoriteTweet(tweetIdStr);
+    }
+  }
+
   render() {
     const styles = require('./Tweet.scss');
     const { tweetInformation, params } = this.props; // eslint-disable-line no-unused-vars
@@ -176,7 +193,7 @@ export default class Medium extends Component {
               { tweet.tweetText }
             </p>
             <p className={ styles.tweetTweetMeta }>
-              <span className={ tweetFavoriteClassName }>
+              <span className={ tweetFavoriteClassName } onClick={ this.handleClickedLikeIcon }>
                 <SVGIcon iconName={ tweet.isFavorited ? 'like-pink' : 'like-dark' } iconClass="iconLike" />
                 { tweet.favoriteCount }
               </span>
