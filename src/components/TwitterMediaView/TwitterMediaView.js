@@ -61,6 +61,7 @@ export default class TwitterMediaView extends Component {
   componentDidMount = () => {
     this.initSocketClient(this.props.mediaViewParams);
     this.initScrollListener();
+    this.initBeforeUnloadListener();
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -86,6 +87,7 @@ export default class TwitterMediaView extends Component {
     this.loadPreviousMediaAttempt = 3;
 
     global.removeEventListener('scroll', this.handleScroll);
+    global.removeEventListener('beforeunload', this.handleBeforeUnload);
 
     if (this.socketClient) {
       this.socketClient.emit(this.props.disconnectTrigger);
@@ -97,6 +99,7 @@ export default class TwitterMediaView extends Component {
 
     this.initSocketClient(nextProps.mediaViewParams);
     this.initScrollListener();
+    this.initBeforeUnloadListener();
   }
 
   shouldComponentUpdate = (nextProps) => {
@@ -109,7 +112,9 @@ export default class TwitterMediaView extends Component {
     const modalStateChanged = (upcomingMedia.showModal !== currentMedia.showModal);
     const modalMediaItemChanged = (upcomingMedia.showModal && currentMedia.showModal &&
       (upcomingMedia.modalMediaItem.mediumIdStr !== currentMedia.modalMediaItem.mediumIdStr ||
-        upcomingMedia.modalMediaItem.tweetIdStr !== currentMedia.modalMediaItem.tweetIdStr));
+        upcomingMedia.modalMediaItem.tweetIdStr !== currentMedia.modalMediaItem.tweetIdStr ||
+        upcomingMedia.modalMediaItem.isFavorited !== currentMedia.modalMediaItem.isFavorited ||
+        upcomingMedia.modalMediaItem.favoriteCount !== currentMedia.modalMediaItem.favoriteCount));
     // console.log(pathNameChanged, mediaArrChanged, mediaStateChanged, modalStateChanged, modalMediaItemChanged);
     return (pathNameChanged || mediaArrChanged || mediaStateChanged || modalStateChanged || modalMediaItemChanged);
   }
@@ -206,6 +211,13 @@ export default class TwitterMediaView extends Component {
     }
   }
 
+  handleBeforeUnload = () => {
+    if (this.socketClient) {
+      this.socketClient.emit(this.props.disconnectTrigger);
+      this.socketClient = null;
+    }
+  }
+
   initSocketClient = (mediaViewParams) => {
     this.props.initMedia();
 
@@ -220,6 +232,10 @@ export default class TwitterMediaView extends Component {
 
   initScrollListener = () => {
     global.addEventListener('scroll', this.handleScroll);
+  }
+
+  initBeforeUnloadListener = () => {
+    global.addEventListener('beforeunload', this.handleBeforeUnload);
   }
 
   render() {

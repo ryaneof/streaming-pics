@@ -4,7 +4,9 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import { SVGIcon } from 'components';
 import {
-  displayMediaModal
+  displayMediaModal,
+  favoriteMediaItem,
+  unFavoriteMediaItem
 } from 'redux/modules/media';
 
 @connect(
@@ -12,7 +14,9 @@ import {
     media: state.media
   }),
   {
-    displayMediaModal
+    displayMediaModal,
+    favoriteMediaItem,
+    unFavoriteMediaItem
   }
 )
 
@@ -20,7 +24,9 @@ export default class TwitterMediaItem extends Component {
   static propTypes = {
     mediaItem: PropTypes.object,
     mediaIndex: PropTypes.number,
-    displayMediaModal: PropTypes.func
+    displayMediaModal: PropTypes.func,
+    favoriteMediaItem: PropTypes.func,
+    unFavoriteMediaItem: PropTypes.func
   }
 
   handleOpenUserRoute = (event) => {
@@ -31,6 +37,17 @@ export default class TwitterMediaItem extends Component {
     event.stopPropagation();
     event.preventDefault();
     this.props.displayMediaModal(this.props.mediaItem, this.props.mediaIndex);
+  }
+
+  handleClickedLikeIcon = (event) => {
+    const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
+    event.stopPropagation();
+
+    if (!isFavorited) {
+      this.props.favoriteMediaItem(tweetIdStr);
+    } else {
+      this.props.unFavoriteMediaItem(tweetIdStr);
+    }
   }
 
   render() {
@@ -61,8 +78,8 @@ export default class TwitterMediaItem extends Component {
               <img src={ mediaItem.userProfileImageURL } />
               <span>{ mediaItem.userName }</span>
             </Link>
-            <span className={ styles.twitterMediaItemFavoriteCount }>
-              <SVGIcon iconName="like" iconClass="iconLike" />
+            <span className={ styles.twitterMediaItemFavoriteCount } onClick={ this.handleClickedLikeIcon }>
+              <SVGIcon iconName={ mediaItem.isFavorited ? 'like-pink' : 'like' } iconClass="iconLike" />
               { mediaItem.favoriteCount }
             </span>
           </p>

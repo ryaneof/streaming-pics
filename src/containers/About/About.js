@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import config from '../../config';
 import ga from 'react-ga';
 import { connect } from 'react-redux';
 
@@ -17,7 +16,6 @@ export default class About extends Component {
   };
 
   componentDidMount() {
-    ga.initialize(config.gaTrackId);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 

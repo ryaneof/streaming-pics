@@ -89,7 +89,7 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/api/auth/twitter/failed' }),
   (req, res) => {
     // Successful Auth
-    res.redirect('/home');
+    res.redirect('/');
   }
 );
 

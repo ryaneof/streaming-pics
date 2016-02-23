@@ -1,3 +1,5 @@
+export createFavoriteTweet from './createFavoriteTweet';
+export destroyFavoriteTweet from './destroyFavoriteTweet';
 export loadAuth from './loadAuth';
 export loadListItems from './loadListItems';
 export showListInformation from './showListInformation';

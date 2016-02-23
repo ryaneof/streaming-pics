@@ -22,17 +22,18 @@ export default function getTweetDetail(user, tweetParams) {
       let currentMediumIndex = -1;
 
       // console.log(data);
-
-      tweet.userScreenName = data.user.screen_name;
-      tweet.userName = data.user.name;
-      tweet.userProfileImageURL = data.user.profile_image_url_https.replace(/\_normal/, '_bigger');
       tweet.favoriteCount = data.favorite_count;
+      tweet.isFavorited = data.favorited;
+      tweet.isRetweeted = data.retweeted;
+      tweet.mediaArr = extractTweetMedia(data);
       // tweet.retweetCount = data.retweet_count;
       tweet.tweetCreatedTime = new Date(data.created_at).getTime();
       tweet.tweetText = data.text;
       tweet.tweetIdStr = data.id_str;
       tweet.tweetURL = `https://twitter.com/${ data.user.screen_name }/status/${ data.id_str }`;
-      tweet.mediaArr = extractTweetMedia(data);
+      tweet.userScreenName = data.user.screen_name;
+      tweet.userName = data.user.name;
+      tweet.userProfileImageURL = data.user.profile_image_url_https.replace(/\_normal/, '_bigger');
 
       const mediaArr = tweet.mediaArr;
 

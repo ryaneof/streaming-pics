@@ -43,6 +43,7 @@ export function extractTweetMedia(tweet) {
               console.log('==> 😅  collect unknown animated_gif variant content type', animatedGIFVariant);
             }
           }
+
           return;
         case 'video':
           if (extendedMediaItem.video_info && extendedMediaItem.video_info.variants) {
@@ -98,6 +99,8 @@ export function extractTweetMedia(tweet) {
 
   mediaArr = twitterMediaArr.concat(thirdPartyServiceMediaURLArr).map((mediaItem) => {
     mediaItem.favoriteCount = status.favorite_count;
+    mediaItem.isFavorited = status.favorited;
+    mediaItem.isRetweeted = status.retweeted;
     // mediaItem.retweetCount = status.retweet_count;
     mediaItem.tweetCreatedTime = new Date(status.created_at).getTime();
     mediaItem.tweetText = status.text;

@@ -1,16 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { routeActions } from 'react-router-redux';
 import ga from 'react-ga';
-import config from '../../config';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { SVGIcon } from 'components';
 import {
   hideMediaModal,
   displayModalPreviousMedia,
-  displayModalNextMedia
+  displayModalNextMedia,
+  favoriteMediaItem,
+  unFavoriteMediaItem
 } from 'redux/modules/media';
 
 @connect(
@@ -20,7 +21,10 @@ import {
   {
     hideMediaModal,
     displayModalPreviousMedia,
-    displayModalNextMedia
+    displayModalNextMedia,
+    favoriteMediaItem,
+    unFavoriteMediaItem,
+    pushState: routeActions.push
   }
 )
 
@@ -31,7 +35,10 @@ export default class TwitterMediaModal extends Component {
     showModal: PropTypes.bool,
     hideMediaModal: PropTypes.func,
     displayModalPreviousMedia: PropTypes.func,
-    displayModalNextMedia: PropTypes.func
+    displayModalNextMedia: PropTypes.func,
+    favoriteMediaItem: PropTypes.func,
+    unFavoriteMediaItem: PropTypes.func,
+    pushState: PropTypes.func
   }
 
   componentDidMount() {
@@ -52,7 +59,9 @@ export default class TwitterMediaModal extends Component {
     }
 
     return (currentMediaItem.tweetIdStr !== upcomingMediaItem.tweetIdStr ||
-      currentMediaItem.mediumIdStr !== upcomingMediaItem.mediumIdStr);
+      currentMediaItem.mediumIdStr !== upcomingMediaItem.mediumIdStr ||
+      currentMediaItem.isFavorited !== upcomingMediaItem.isFavorited ||
+      currentMediaItem.favoriteCount !== upcomingMediaItem.favoriteCount);
   }
 
   componentDidUpdate = () => {
@@ -65,7 +74,7 @@ export default class TwitterMediaModal extends Component {
         `Picture | @${ mediaItem.tweetIdStr }`,
         `/${ mediaItem.tweetUserScreenName }/status/${ mediaItem.tweetIdStr }/photo/${ mediaItem.mediumIdStr }`
       );
-      ga.initialize(config.gaTrackId);
+
       ga.modalview(`/${ mediaItem.tweetUserScreenName }/status/${ mediaItem.tweetIdStr }/photo/${ mediaItem.mediumIdStr }`);
     }
   }
@@ -102,8 +111,31 @@ export default class TwitterMediaModal extends Component {
   }
 
   handleOpenUserRoute = (event) => {
+    const { mediaItem: { userScreenName }} = this.props;
     event.stopPropagation();
+    event.preventDefault();
+
+    if (global.history) {
+      global.history.pushState(
+        null,
+        `Media by @${ userScreenName }`,
+        `/${ userScreenName }`
+      );
+    }
+
     this.props.hideMediaModal();
+    this.props.pushState(`/${ userScreenName }`);
+  }
+
+  handleClickedModalLikeIcon = (event) => {
+    const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
+    event.stopPropagation();
+
+    if (!isFavorited) {
+      this.props.favoriteMediaItem(tweetIdStr);
+    } else {
+      this.props.unFavoriteMediaItem(tweetIdStr);
+    }
   }
 
   close = () => {
@@ -124,6 +156,9 @@ export default class TwitterMediaModal extends Component {
 
     const styles = require('./TwitterMediaModal.scss');
     const tweetCreatedTime = moment(mediaItem.tweetCreatedTime);
+    const twitterMediaModalFavoriteClassName = mediaItem.isFavorited ?
+    `${ styles.twitterMediaModalFavoriteCount } ${ styles.twitterFavoritedColor }` :
+      styles.twitterMediaModalFavoriteCount;
 
     const modalImageWrapperStyle = global.innerHeight ? {
       minHeight: global.innerHeight * 0.86
@@ -161,9 +196,9 @@ export default class TwitterMediaModal extends Component {
                   <img src={ mediaItem.userProfileImageURL } />
                 </p>
                 <p className={ styles.twitterMediaModalUserNameWrapper }>
-                  <Link to={ `/${ mediaItem.userScreenName }` } onClick={ this.handleOpenUserRoute }>
+                  <a href={ `/${ mediaItem.userScreenName }` } onClick={ this.handleOpenUserRoute }>
                     <span className={ styles.twitterMediaModalUserName }>{ mediaItem.userName }</span>
-                  </Link>
+                  </a>
                   <span className={ styles.twitterMediaModalUserScreenName }>@{ mediaItem.userScreenName }</span>
                 </p>
               </div>
@@ -171,8 +206,11 @@ export default class TwitterMediaModal extends Component {
                 { mediaItem.tweetText }
               </p>
               <p className={ styles.twitterMediaModalTweetMeta }>
-                <span className={ styles.twitterMediaModalFavoriteCount }>
-                  <SVGIcon iconName="like-dark" iconClass="iconLikeDark" />
+                <span className={ twitterMediaModalFavoriteClassName } onClick={ this.handleClickedModalLikeIcon }>
+                  <SVGIcon
+                    iconName={ mediaItem.isFavorited ? 'like-pink' : 'like-dark' }
+                    iconClass="iconLike"
+                  />
                   { mediaItem.favoriteCount }
                 </span>
                 <a

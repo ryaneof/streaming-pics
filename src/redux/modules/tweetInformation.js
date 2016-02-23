@@ -4,6 +4,12 @@ const LOAD_FAILED = 'StreamingPics/tweetInformation/LOAD_FAILED';
 const DISPLAY_PREVIOUS_MEDIUM = 'StreamingPics/tweetInformation/DISPLAY_PREVIOUS_MEDIUM';
 const DISPLAY_NEXT_MEDIUM = 'StreamingPics/tweetInformation/DISPLAY_NEXT_MEDIUM';
 const RESET = 'StreamingPics/tweetInformation/RESET';
+const FAVORITE_TWEET = 'StreamingPics/tweetInformation/FAVORITE_TWEET';
+const FAVORITE_TWEET_SUCCESS = 'StreamingPics/tweetInformation/FAVORITE_TWEET_SUCCESS';
+const FAVORITE_TWEET_FAILED = 'StreamingPics/tweetInformation/FAVORITE_TWEET_FAILED';
+const UNFAVORITE_TWEET = 'StreamingPics/tweetInformation/UNFAVORITE_TWEET';
+const UNFAVORITE_TWEET_SUCCESS = 'StreamingPics/tweetInformation/UNFAVORITE_TWEET_SUCCESS';
+const UNFAVORITE_TWEET_FAILED = 'StreamingPics/tweetInformation/UNFAVORITE_TWEET_FAILED';
 
 const initialState = {
   tweet: {},
@@ -57,6 +63,54 @@ export default function reducer(state = initialState, action = {}) {
         tweet: {},
         loading: true
       };
+    case FAVORITE_TWEET:
+      return {
+        ...state,
+        tweet: {
+          ...state.tweet,
+          isFavorited: true
+        }
+      };
+    case FAVORITE_TWEET_SUCCESS:
+      return {
+        ...state,
+        tweet: {
+          ...state.tweet,
+          favoriteCount: action.result.favoriteCount
+        }
+      };
+    case FAVORITE_TWEET_FAILED:
+      return {
+        ...state,
+        tweet: {
+          ...state.tweet,
+          isFavorited: false
+        }
+      };
+    case UNFAVORITE_TWEET:
+      return {
+        ...state,
+        tweet: {
+          ...state.tweet,
+          isFavorited: false
+        }
+      };
+    case UNFAVORITE_TWEET_SUCCESS:
+      return {
+        ...state,
+        tweet: {
+          ...state.tweet,
+          favoriteCount: action.result.favoriteCount
+        }
+      };
+    case UNFAVORITE_TWEET_FAILED:
+      return {
+        ...state,
+        tweet: {
+          ...state.tweet,
+          isFavorited: true
+        }
+      };
     default:
       return state;
   }
@@ -95,5 +149,35 @@ export function displayPreviousMedium() {
 export function displayNextMedium() {
   return {
     type: DISPLAY_NEXT_MEDIUM
+  };
+}
+
+export function favoriteTweet(tweetIdStr) {
+  return {
+    types: [
+      FAVORITE_TWEET,
+      FAVORITE_TWEET_SUCCESS,
+      FAVORITE_TWEET_FAILED
+    ],
+    promise: (client) => client.post('/createFavoriteTweet', {
+      data: {
+        tweetIdStr
+      }
+    })
+  };
+}
+
+export function unFavoriteTweet(tweetIdStr) {
+  return {
+    types: [
+      UNFAVORITE_TWEET,
+      UNFAVORITE_TWEET_SUCCESS,
+      UNFAVORITE_TWEET_FAILED
+    ],
+    promise: (client) => client.post('/destroyFavoriteTweet', {
+      data: {
+        tweetIdStr
+      }
+    })
   };
 }

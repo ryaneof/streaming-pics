@@ -33,26 +33,9 @@ export default (store) => {
     }
   };
 
-  const onEnterIndexRoute = (nextState, replace, cb) => {
-    function checkAuth() {
-      const { auth: { user }} = store.getState();
-      if (user) {
-        replace('/home');
-      }
-      cb();
-    }
-
-    if (!isAuthLoaded(store.getState())) {
-      store.dispatch(loadAuth()).then(checkAuth);
-    } else {
-      checkAuth();
-    }
-  };
-
   return (
-    <Route path="/" component={ App } >
-      { /* Landing route, redirect to /home if signed in */ }
-      <IndexRoute component={ Landing } onEnter={ onEnterIndexRoute } />
+    <Route path="/" component={ App }>
+      <IndexRoute component={ Landing } />
       <Route path="about" component={ About }/>
 
       { /* Routes requiring signed in */ }

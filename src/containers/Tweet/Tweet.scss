@@ -102,11 +102,19 @@
   opacity: 1;
   font-weight: 400;
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
 
   span:last-child {
     padding-left: 3px;
   }
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.tweetFavoritedColor {
+  color: #e2264d;
 }
 
 .tweetCurrentMediumContentWrapper {

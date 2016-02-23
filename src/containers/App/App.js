@@ -10,6 +10,7 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import Helmet from 'react-helmet';
 import { isLoaded as isAuthLoaded, load as loadAuth, signOut } from 'redux/modules/auth';
 import { routeActions } from 'react-router-redux';
+import ga from 'react-ga';
 import config from '../../config';
 import { asyncConnect } from 'redux-async-connect';
 
@@ -49,6 +50,12 @@ export default class App extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   };
+
+  componentWillMount() {
+    if (global.document) {
+      ga.initialize(config.gaTrackId);
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
