@@ -45,6 +45,7 @@ export default (store) => {
         <Route path=":userScreenName/likes" component={ UserLikes } />
         <Route path=":userScreenName/list/:listSlug" component={ List } />
         <Route path=":userScreenName/lists/:listRelation" component={ Lists } />
+        <Route path=":userScreenName/status/:tweetIdStr" component={ Tweet } />
         <Route path=":userScreenName/status/:tweetIdStr/photo/:mediumIdStr" component={ Tweet } />
       </Route>
     </Route>

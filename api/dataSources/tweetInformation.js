@@ -37,14 +37,19 @@ export default function getTweetDetail(user, tweetParams) {
 
       const mediaArr = tweet.mediaArr;
 
-      if (mediaArr.length > 0 && mediumIdStr) {
-        mediaArr.forEach((mediaItem, mediaItemIndex) => {
-          if (mediaItem.mediumIdStr === mediumIdStr) {
-            currentMedium = mediaItem;
-            currentMediumIndex = mediaItemIndex;
-            return false;
-          }
-        });
+      if (mediaArr.length > 0) {
+        if (mediumIdStr) {
+          mediaArr.forEach((mediaItem, mediaItemIndex) => {
+            if (mediaItem.mediumIdStr === mediumIdStr) {
+              currentMedium = mediaItem;
+              currentMediumIndex = mediaItemIndex;
+              return false;
+            }
+          });
+        } else {
+          currentMediumIndex = 0;
+          currentMedium = mediaArr[currentMediumIndex];
+        }
       }
 
       tweet.currentMedium = currentMedium;
