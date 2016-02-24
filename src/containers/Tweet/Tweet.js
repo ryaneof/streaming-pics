@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { routeActions } from 'react-router-redux';
 import ga from 'react-ga';
 import Helmet from 'react-helmet';
 import {
@@ -25,7 +26,8 @@ import { SVGIcon, LoadingIcon } from 'components';
     displayPreviousMedium,
     displayNextMedium,
     favoriteTweet,
-    unFavoriteTweet
+    unFavoriteTweet,
+    pushState: routeActions.push
   }
 )
 
@@ -40,7 +42,8 @@ export default class Medium extends Component {
     displayPreviousMedium: PropTypes.func,
     displayNextMedium: PropTypes.func,
     favoriteTweet: PropTypes.func,
-    unFavoriteTweet: PropTypes.func
+    unFavoriteTweet: PropTypes.func,
+    pushState: PropTypes.func
   }
 
   componentDidMount = () => {
@@ -141,6 +144,13 @@ export default class Medium extends Component {
     }
   }
 
+  handleOpenQuotedStatusRoute = (event) => {
+    const { tweet: { quotedStatus }} = this.props.tweetInformation;
+    event.stopPropagation();
+    event.preventDefault();
+    this.props.pushState(`/${ quotedStatus.userScreenName }/status/${ quotedStatus.tweetIdStr }`);
+  }
+
   render() {
     const styles = require('./Tweet.scss');
     const { tweetInformation, params } = this.props; // eslint-disable-line no-unused-vars
@@ -183,7 +193,7 @@ export default class Medium extends Component {
                 <img src={ tweet.userProfileImageURL } />
               </p>
               <p className={ styles.tweetUserNameWrapper }>
-                <Link to={ `/${ tweet.userScreenName }` } onClick={ this.handleOpenUserRoute }>
+                <Link to={ `/${ tweet.userScreenName }` }>
                   <span className={ styles.tweetUserName }>{ tweet.userName }</span>
                 </Link>
                 <span className={ styles.tweetUserScreenName }>@{ tweet.userScreenName }</span>
@@ -192,6 +202,17 @@ export default class Medium extends Component {
             <p className={ styles.tweetTweetText }>
               { tweet.tweetText }
             </p>
+            { tweet.quotedStatus &&
+              <div className={ styles.tweetQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
+                <p className={ styles.tweetQuotedTweetUser }>
+                  <strong>{ tweet.quotedStatus.userName }</strong>
+                  <span>{ `@${ tweet.quotedStatus.userScreenName }` }</span>
+                </p>
+                <p className={ styles.tweetQuotedTweetText }>
+                  { tweet.quotedStatus.tweetText }
+                </p>
+              </div>
+              }
             <p className={ styles.tweetTweetMeta }>
               <span className={ tweetFavoriteClassName } onClick={ this.handleClickedLikeIcon }>
                 <SVGIcon iconName={ tweet.isFavorited ? 'like-pink' : 'like-dark' } iconClass="iconLike" />

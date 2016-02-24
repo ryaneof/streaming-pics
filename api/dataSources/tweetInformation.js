@@ -18,6 +18,7 @@ export default function getTweetDetail(user, tweetParams) {
       }
 
       const tweet = {};
+      const quotedStatus = data.quoted_status;
       let currentMedium = null;
       let currentMediumIndex = -1;
 
@@ -34,6 +35,20 @@ export default function getTweetDetail(user, tweetParams) {
       tweet.userScreenName = data.user.screen_name;
       tweet.userName = data.user.name;
       tweet.userProfileImageURL = data.user.profile_image_url_https.replace(/\_normal/, '_bigger');
+
+      tweet.quotedStatus = quotedStatus ? {
+        favoriteCount: quotedStatus.favorite_count,
+        isFavorited: quotedStatus.favorited,
+        isRetweeted: quotedStatus.retweeted,
+        tweetUserScreenName: quotedStatus.user.screen_name,
+        tweetIdStr: quotedStatus.id_str,
+        tweetText: quotedStatus.text,
+        tweetURL: `https://twitter.com/${ quotedStatus.user.screen_name }/status/${ quotedStatus.id_str }`,
+        userScreenName: quotedStatus.user.screen_name,
+        userProfileImageURL: quotedStatus.user.profile_image_url_https.replace(/\_normal/, '_bigger'),
+        userName: quotedStatus.user.name,
+        userIdStr: quotedStatus.user.id_str
+      } : null;
 
       const mediaArr = tweet.mediaArr;
 

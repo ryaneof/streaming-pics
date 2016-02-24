@@ -75,10 +75,41 @@
 .tweetTweetText {
   font-size: 16px;
   line-height: 24px;
-  padding-bottom: 8px;
+}
+
+.tweetQuotedTweet {
+  background-color: #e8ebee;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.tweetQuotedTweetUser {
+  padding: 10px;
+  padding-bottom: 0;
+
+  strong {
+    color: #878a8d;
+    font-size: 12px;
+    padding-right: 2px;
+  }
+
+  span {
+    color: #abadaf;
+  }
+}
+
+.tweetQuotedTweetText {
+  padding: 10px;
+  padding-top: 0;
+  font-size: 12px;
+  color: #abadaf;
 }
 
 .tweetTweetMeta {
+  padding-top: 8px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
