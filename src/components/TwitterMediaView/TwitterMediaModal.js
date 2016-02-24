@@ -144,13 +144,20 @@ export default class TwitterMediaModal extends Component {
   }
 
   handleClickedModalLikeIcon = (event) => {
-    const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
     event.stopPropagation();
+    const { mediaItem: { isFavorited, isRetweeted, tweetIdStr, retweetedTweetIdStr }} = this.props;
+    let currentTweetIdStr;
+
+    if (isRetweeted) {
+      currentTweetIdStr = retweetedTweetIdStr;
+    } else {
+      currentTweetIdStr = tweetIdStr;
+    }
 
     if (!isFavorited) {
-      this.props.favoriteMediaItem(tweetIdStr);
+      this.props.favoriteMediaItem(currentTweetIdStr);
     } else {
-      this.props.unFavoriteMediaItem(tweetIdStr);
+      this.props.unFavoriteMediaItem(currentTweetIdStr);
     }
   }
 

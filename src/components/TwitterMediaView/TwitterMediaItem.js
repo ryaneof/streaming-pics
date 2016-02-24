@@ -40,14 +40,29 @@ export default class TwitterMediaItem extends Component {
   }
 
   handleClickedLikeIcon = (event) => {
-    const { mediaItem } = this.props;
-    const mediaItemSouce = mediaItem.isFromQuotedStatus ? mediaItem.quotedStatus : mediaItem;
     event.stopPropagation();
+    const { mediaItem } = this.props;
 
-    if (!mediaItemSouce.isFavorited) {
-      this.props.favoriteMediaItem(mediaItemSouce.tweetIdStr);
+    let tweetIdStr;
+    let mediaItemSource;
+
+    if (mediaItem.isRetweeted) {
+      tweetIdStr = mediaItem.retweetedTweetIdStr;
     } else {
-      this.props.unFavoriteMediaItem(mediaItemSouce.tweetIdStr);
+      tweetIdStr = mediaItem.tweetIdStr;
+    }
+
+    if (mediaItem.isFromQuotedStatus) {
+      mediaItemSource = mediaItem.quotedStatus;
+      tweetIdStr = mediaItemSource.tweetIdStr;
+    } else {
+      mediaItemSource = mediaItem;
+    }
+
+    if (!mediaItemSource.isFavorited) {
+      this.props.favoriteMediaItem(tweetIdStr);
+    } else {
+      this.props.unFavoriteMediaItem(tweetIdStr);
     }
   }
 

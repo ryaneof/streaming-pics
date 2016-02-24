@@ -27,6 +27,7 @@ export default function getTweetDetail(user, tweetParams) {
       tweet.favoriteCount = status.favorite_count;
       tweet.isFavorited = status.favorited;
       tweet.isRetweeted = status.retweeted;
+      tweet.retweetedTweetIdStr = status.retweeted ? status.id_str : null;
       tweet.mediaArr = extractTweetMedia(status);
       // tweet.retweetCount = status.retweet_count;
       tweet.tweetCreatedTime = new Date(status.created_at).getTime();

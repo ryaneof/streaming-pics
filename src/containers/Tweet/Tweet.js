@@ -134,13 +134,20 @@ export default class Medium extends Component {
   }
 
   handleClickedLikeIcon = (event) => {
-    const { tweet: { isFavorited, tweetIdStr }} = this.props.tweetInformation;
     event.stopPropagation();
+    const { tweet: { isFavorited, isRetweeted, tweetIdStr, retweetedTweetIdStr }} = this.props.tweetInformation;
+    let currentTweetIdStr;
+
+    if (isRetweeted) {
+      currentTweetIdStr = retweetedTweetIdStr;
+    } else {
+      currentTweetIdStr = tweetIdStr;
+    }
 
     if (!isFavorited) {
-      this.props.favoriteTweet(tweetIdStr);
+      this.props.favoriteTweet(currentTweetIdStr);
     } else {
-      this.props.unFavoriteTweet(tweetIdStr);
+      this.props.unFavoriteTweet(currentTweetIdStr);
     }
   }
 
