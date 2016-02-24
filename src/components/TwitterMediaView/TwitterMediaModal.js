@@ -110,21 +110,30 @@ export default class TwitterMediaModal extends Component {
     this.props.displayModalNextMedia();
   }
 
+  handleOpenRoute = (routeTitle, routeURI) => {
+    if (global.history) {
+      global.history.pushState(null, routeTitle, routeURI);
+    }
+
+    this.props.hideMediaModal();
+    this.props.pushState(routeURI);
+  }
+
   handleOpenUserRoute = (event) => {
     const { mediaItem: { userScreenName }} = this.props;
     event.stopPropagation();
     event.preventDefault();
+    this.handleOpenRoute(`Media by @${ userScreenName }`, `/${ userScreenName }`);
+  }
 
-    if (global.history) {
-      global.history.pushState(
-        null,
-        `Media by @${ userScreenName }`,
-        `/${ userScreenName }`
-      );
-    }
-
-    this.props.hideMediaModal();
-    this.props.pushState(`/${ userScreenName }`);
+  handleOpenQuotedStatusRoute = (event) => {
+    const { mediaItem: { quotedStatus }} = this.props;
+    event.stopPropagation();
+    event.preventDefault();
+    this.handleOpenRoute(
+      `Tweet of @${ quotedStatus.userScreenName }`,
+      `/${ quotedStatus.userScreenName }/status/${ quotedStatus.tweetIdStr }`
+    );
   }
 
   handleClickedModalLikeIcon = (event) => {
@@ -205,6 +214,17 @@ export default class TwitterMediaModal extends Component {
               <p className={ styles.twitterMediaModalTweetText }>
                 { mediaItem.tweetText }
               </p>
+              { mediaItem.quotedStatus &&
+              <div className={ styles.twitterMediaModalQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
+                <p className={ styles.twitterMediaModalQuotedTweetUser }>
+                  <strong>{ mediaItem.quotedStatus.userName }</strong>
+                  <span>{ `@${ mediaItem.quotedStatus.userScreenName }` }</span>
+                </p>
+                <p className={ styles.twitterMediaModalQuotedTweetText }>
+                  { mediaItem.quotedStatus.tweetText }
+                </p>
+              </div>
+              }
               <p className={ styles.twitterMediaModalTweetMeta }>
                 <span className={ twitterMediaModalFavoriteClassName } onClick={ this.handleClickedModalLikeIcon }>
                   <SVGIcon
