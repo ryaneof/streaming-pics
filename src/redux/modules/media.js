@@ -174,9 +174,10 @@ export default function reducer(state = initialState, action = {}) {
       const favoritedActionResult = action.result;
       const favoritedTweetIdStr = favoritedActionResult.tweetIdStr;
       const updatedMediaArrWithFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
-        if (mediaItem.tweetIdStr === favoritedTweetIdStr) {
-          mediaItem.isFavorited = true;
-          mediaItem.favoriteCount = favoritedActionResult.favoriteCount;
+        const mediaItemSource = mediaItem.isFromQuotedStatus ? mediaItem.quotedStatus : mediaItem;
+        if (mediaItemSource.tweetIdStr === favoritedTweetIdStr) {
+          mediaItemSource.isFavorited = true;
+          mediaItemSource.favoriteCount = favoritedActionResult.favoriteCount;
         }
         return mediaItem;
       });
@@ -214,9 +215,10 @@ export default function reducer(state = initialState, action = {}) {
       const unfavoritedActionResult = action.result;
       const unfavoritedTweetIdStr = unfavoritedActionResult.tweetIdStr;
       const updatedMediaArrWithUnFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
-        if (mediaItem.tweetIdStr === unfavoritedTweetIdStr) {
-          mediaItem.isFavorited = false;
-          mediaItem.favoriteCount = unfavoritedActionResult.favoriteCount;
+        const mediaItemSource = mediaItem.isFromQuotedStatus ? mediaItem.quotedStatus : mediaItem;
+        if (mediaItemSource.tweetIdStr === unfavoritedTweetIdStr) {
+          mediaItemSource.isFavorited = false;
+          mediaItemSource.favoriteCount = unfavoritedActionResult.favoriteCount;
         }
         return mediaItem;
       });

@@ -123,7 +123,6 @@ export function extractTweetMedia(tweet) {
   let mediaArr = [];
   let quotedStatusMediaArr = [];
 
-  const user = status.user;
   const tweetMediaArr = extractStatusMedia(status);
   const quotedStatus = status.quoted_status;
 
@@ -135,7 +134,7 @@ export function extractTweetMedia(tweet) {
     // quoted status is technically two complete tweets
     // media within quoted status should contain original status information
     quotedStatusMediaArr = extractStatusMedia(quotedStatus).map((mediaItem) => {
-      mediaItem = appendTweetInformation(mediaItem, status, tweet);
+      mediaItem = appendTweetInformation(mediaItem, status, tweet); // eslint-disable-line no-param-reassign
       mediaItem.isFromQuotedStatus = true;
       mediaItem.quotedStatus = {
         favoriteCount: quotedStatus.favorite_count,

@@ -40,13 +40,14 @@ export default class TwitterMediaItem extends Component {
   }
 
   handleClickedLikeIcon = (event) => {
-    const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
+    const { mediaItem } = this.props;
+    const mediaItemSouce = mediaItem.isFromQuotedStatus ? mediaItem.quotedStatus : mediaItem;
     event.stopPropagation();
 
-    if (!isFavorited) {
-      this.props.favoriteMediaItem(tweetIdStr);
+    if (!mediaItemSouce.isFavorited) {
+      this.props.favoriteMediaItem(mediaItemSouce.tweetIdStr);
     } else {
-      this.props.unFavoriteMediaItem(tweetIdStr);
+      this.props.unFavoriteMediaItem(mediaItemSouce.tweetIdStr);
     }
   }
 
@@ -56,6 +57,7 @@ export default class TwitterMediaItem extends Component {
     const style = {
       backgroundImage: `url("${ mediaItem.mediumURL }")`
     };
+    const mediaItemInformation = mediaItem.isFromQuotedStatus ? mediaItem.quotedStatus : mediaItem;
 
     return (
       <div
@@ -72,15 +74,15 @@ export default class TwitterMediaItem extends Component {
           <p className={ styles.twitterMediaItemTip }>
             <Link
               className={ styles.twitterMediaItemUserLink }
-              to={ `/${ mediaItem.userScreenName }` }
+              to={ `/${ mediaItemInformation.userScreenName }` }
               onClick={ this.handleOpenUserRoute }
             >
-              <img src={ mediaItem.userProfileImageURL } />
-              <span>{ mediaItem.userName }</span>
+              <img src={ mediaItemInformation.userProfileImageURL } />
+              <span>{ mediaItemInformation.userName }</span>
             </Link>
             <span className={ styles.twitterMediaItemFavoriteCount } onClick={ this.handleClickedLikeIcon }>
-              <SVGIcon iconName={ mediaItem.isFavorited ? 'like-pink' : 'like' } iconClass="iconLike" />
-              { mediaItem.favoriteCount }
+              <SVGIcon iconName={ mediaItemInformation.isFavorited ? 'like-pink' : 'like' } iconClass="iconLike" />
+              { mediaItemInformation.favoriteCount }
             </span>
           </p>
         </div>
