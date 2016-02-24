@@ -203,16 +203,27 @@ export default class Medium extends Component {
               { tweet.tweetText }
             </p>
             { tweet.quotedStatus &&
-              <div className={ styles.tweetQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
-                <p className={ styles.tweetQuotedTweetUser }>
-                  <strong>{ tweet.quotedStatus.userName }</strong>
-                  <span>{ `@${ tweet.quotedStatus.userScreenName }` }</span>
-                </p>
-                <p className={ styles.tweetQuotedTweetText }>
-                  { tweet.quotedStatus.tweetText }
-                </p>
-              </div>
-              }
+            <div className={ styles.tweetQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
+              <p className={ styles.tweetQuotedTweetUser }>
+                <strong>{ tweet.quotedStatus.userName }</strong>
+                <span>{ `@${ tweet.quotedStatus.userScreenName }` }</span>
+              </p>
+              <p className={ styles.tweetQuotedTweetText }>
+                { tweet.quotedStatus.tweetText }
+              </p>
+            </div>
+            }
+            { tweet.isRetweeted &&
+            <p className={ styles.tweetRetweetedUser }>
+              <span className={ styles.tweetRetweetedIcon }>
+                <SVGIcon iconName="retweet" iconClass="iconRetweet" />
+              </span>
+              <Link className={ styles.tweetRetweetedUserLink } to={ `/${ tweet.tweetUserScreenName }` }>
+                <img src={ tweet.tweetUserProfileImageURL } />
+                <span>{ tweet.tweetUserName }</span>
+              </Link>
+            </p>
+            }
             <p className={ styles.tweetTweetMeta }>
               <span className={ tweetFavoriteClassName } onClick={ this.handleClickedLikeIcon }>
                 <SVGIcon iconName={ tweet.isFavorited ? 'like-pink' : 'like-dark' } iconClass="iconLike" />

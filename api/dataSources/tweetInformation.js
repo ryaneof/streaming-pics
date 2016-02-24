@@ -18,23 +18,28 @@ export default function getTweetDetail(user, tweetParams) {
       }
 
       const tweet = {};
-      const quotedStatus = data.quoted_status;
+      const originalTweet = data;
+      const status = originalTweet.retweeted_status ? originalTweet.retweeted_status : originalTweet;
+      const quotedStatus = status.quoted_status;
       let currentMedium = null;
       let currentMediumIndex = -1;
 
-      // console.log(data);
-      tweet.favoriteCount = data.favorite_count;
-      tweet.isFavorited = data.favorited;
-      tweet.isRetweeted = data.retweeted;
-      tweet.mediaArr = extractTweetMedia(data);
-      // tweet.retweetCount = data.retweet_count;
-      tweet.tweetCreatedTime = new Date(data.created_at).getTime();
-      tweet.tweetText = data.text;
-      tweet.tweetIdStr = data.id_str;
-      tweet.tweetURL = `https://twitter.com/${ data.user.screen_name }/status/${ data.id_str }`;
-      tweet.userScreenName = data.user.screen_name;
-      tweet.userName = data.user.name;
-      tweet.userProfileImageURL = data.user.profile_image_url_https.replace(/\_normal/, '_bigger');
+      tweet.favoriteCount = status.favorite_count;
+      tweet.isFavorited = status.favorited;
+      tweet.isRetweeted = status.retweeted;
+      tweet.mediaArr = extractTweetMedia(status);
+      // tweet.retweetCount = status.retweet_count;
+      tweet.tweetCreatedTime = new Date(status.created_at).getTime();
+      tweet.tweetText = status.text;
+      tweet.tweetIdStr = originalTweet.id_str;
+      tweet.tweetUserScreenName = originalTweet.user.screen_name;
+      tweet.tweetUserName = originalTweet.user.name;
+      tweet.tweetUserProfileImageURL = originalTweet.user.profile_image_url_https.replace(/\_normal/, '_bigger');
+      tweet.tweetURL = `https://twitter.com/${ originalTweet.user.screen_name }/status/${ originalTweet.id_str }`;
+      tweet.userScreenName = status.user.screen_name;
+      tweet.userProfileImageURL = status.user.profile_image_url_https.replace(/\_normal/, '_bigger');
+      tweet.userName = status.user.name;
+      tweet.userIdStr = status.user.id_str;
 
       tweet.quotedStatus = quotedStatus ? {
         favoriteCount: quotedStatus.favorite_count,
