@@ -1,18 +1,11 @@
-export function extractTweetMedia(tweet) {
-  let status = tweet;
-
-  if (tweet.retweeted_status) {
-    status = tweet.retweeted_status;
-  } else if (tweet.quoted_status) {
-    status = tweet.quoted_status;
-  }
-
-  const user = status.user;
+function extractStatusMedia(status) {
+  // a status would be a tweet, a retweeted tweet, or a quoted tweet
   const thirdPartyServiceMediaURLArr = [];
   const twitterMediaArr = [];
-  const containsExtendedMediaEntities = (status.extended_entities && status.extended_entities.media && status.extended_entities.media.length > 0);
-
-  let mediaArr = [];
+  const containsExtendedMediaEntities = (status.extended_entities &&
+    status.extended_entities.media &&
+    status.extended_entities.media.length > 0
+  );
 
   if (containsExtendedMediaEntities) {
     status.extended_entities.media.forEach((extendedMediaItem) => {
@@ -96,24 +89,71 @@ export function extractTweetMedia(tweet) {
     }
   });
 
-  mediaArr = twitterMediaArr.concat(thirdPartyServiceMediaURLArr).map((mediaItem) => {
-    mediaItem.favoriteCount = status.favorite_count;
-    mediaItem.isFavorited = status.favorited;
-    mediaItem.isRetweeted = status.retweeted;
-    // mediaItem.retweetCount = status.retweet_count;
-    mediaItem.tweetCreatedTime = new Date(status.created_at).getTime();
-    mediaItem.tweetText = status.text;
-    mediaItem.tweetIdStr = tweet.id_str;
-    mediaItem.tweetUserScreenName = tweet.user.screen_name;
-    // mediaItem.tweetUserIdStr = tweet.user.id_str;
-    mediaItem.tweetURL = `https://twitter.com/${ tweet.user.screen_name }/status/${ tweet.id_str }`;
-    mediaItem.userScreenName = user.screen_name;
-    mediaItem.userProfileImageURL = user.profile_image_url_https.replace(/\_normal/, '_bigger');
-    mediaItem.userName = user.name;
-    mediaItem.userIdStr = user.id_str;
+  return twitterMediaArr.concat(thirdPartyServiceMediaURLArr);
+}
 
-    return mediaItem;
+function appendTweetInformation(mediaItem, status, tweet) {
+  const user = status.user;
+
+  mediaItem.favoriteCount = status.favorite_count;
+  mediaItem.isFavorited = status.favorited;
+  mediaItem.isRetweeted = status.retweeted;
+  // mediaItem.retweetCount = status.retweet_count;
+  mediaItem.tweetCreatedTime = new Date(status.created_at).getTime();
+  mediaItem.tweetText = status.text;
+  mediaItem.tweetIdStr = tweet.id_str;
+  mediaItem.tweetUserScreenName = tweet.user.screen_name;
+  // mediaItem.tweetUserIdStr = tweet.user.id_str;
+  mediaItem.tweetURL = `https://twitter.com/${ tweet.user.screen_name }/status/${ tweet.id_str }`;
+  mediaItem.userScreenName = user.screen_name;
+  mediaItem.userProfileImageURL = user.profile_image_url_https.replace(/\_normal/, '_bigger');
+  mediaItem.userName = user.name;
+  mediaItem.userIdStr = user.id_str;
+
+  return mediaItem;
+}
+
+export function extractTweetMedia(tweet) {
+  let status = tweet;
+
+  if (tweet.retweeted_status) {
+    status = tweet.retweeted_status;
+  }
+
+  let mediaArr = [];
+  let quotedStatusMediaArr = [];
+
+  const user = status.user;
+  const tweetMediaArr = extractStatusMedia(status);
+  const quotedStatus = status.quoted_status;
+
+  mediaArr = tweetMediaArr.map((mediaItem) => {
+    return appendTweetInformation(mediaItem, status, tweet);
   });
 
-  return mediaArr;
+  if (quotedStatus) {
+    // quoted status is technically two complete tweets
+    // media within quoted status should contain original status information
+    quotedStatusMediaArr = extractStatusMedia(quotedStatus).map((mediaItem) => {
+      mediaItem = appendTweetInformation(mediaItem, status, tweet);
+      mediaItem.isFromQuotedStatus = true;
+      mediaItem.quotedStatus = {
+        favoriteCount: quotedStatus.favorite_count,
+        isFavorited: quotedStatus.favorited,
+        isRetweeted: quotedStatus.retweeted,
+        tweetUserScreenName: quotedStatus.user.screen_name,
+        tweetIdStr: quotedStatus.id_str,
+        tweetText: quotedStatus.text,
+        tweetURL: `https://twitter.com/${ quotedStatus.user.screen_name }/status/${ quotedStatus.id_str }`,
+        userScreenName: quotedStatus.user.screen_name,
+        userProfileImageURL: quotedStatus.user.profile_image_url_https.replace(/\_normal/, '_bigger'),
+        userName: quotedStatus.user.name,
+        userIdStr: quotedStatus.user.id_str
+      };
+
+      return mediaItem;
+    });
+  }
+
+  return mediaArr.concat(quotedStatusMediaArr);
 }
