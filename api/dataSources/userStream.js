@@ -1,8 +1,5 @@
-import Twit from 'twit';
-import nconf from 'nconf';
 import { extractTweetMedia } from '../utils/tweetHandler';
-
-nconf.env();
+import { createTwitClient } from '../utils/twitClient';
 
 export default function userStream(socket) {
   let user;
@@ -10,7 +7,7 @@ export default function userStream(socket) {
 
   try {
     user = socket.handshake.session.passport.user;
-  } catch (e) {
+  } catch (err) {
     user = null;
   }
 
@@ -24,15 +21,10 @@ export default function userStream(socket) {
     return;
   }
 
-  let T = new Twit({
-    consumer_key: nconf.get('TWITTER_CONSUMER_KEY'),
-    consumer_secret: nconf.get('TWITTER_CONSUMER_SECRET'),
-    access_token: user.token,
-    access_token_secret: user.tokenSecret
-  });
+  const twitClient = createTwitClient(user);
 
   // start loading the old tweets
-  T.get('statuses/home_timeline', {
+  twitClient.get('statuses/home_timeline', {
     count: 200
   }, (err, data, response) => {
     if (err) {
@@ -62,7 +54,7 @@ export default function userStream(socket) {
     const lastTweet = data[data.length - 1];
 
     data.forEach((tweet) => {
-      let mediaArr = extractTweetMedia(tweet);
+      const mediaArr = extractTweetMedia(tweet);
 
       if (mediaArr.length > 0) {
         media = media.concat(mediaArr);
@@ -85,7 +77,7 @@ export default function userStream(socket) {
       return;
     }
 
-    T.get('statuses/home_timeline', {
+    twitClient.get('statuses/home_timeline', {
       count: 100,
       max_id: maxTweetId
     }, (err, data, response) => {
@@ -121,7 +113,7 @@ export default function userStream(socket) {
       }
 
       data.forEach((tweet) => {
-        let mediaArr = extractTweetMedia(tweet);
+        const mediaArr = extractTweetMedia(tweet);
 
         if (mediaArr.length > 0) {
           media = media.concat(mediaArr);
@@ -132,20 +124,20 @@ export default function userStream(socket) {
         media: media,
         lastTweetId: lastTweet.id
       });
-    })
+    });
   });
 
-  userStreamSocket = T.stream('user');
+  userStreamSocket = twitClient.stream('user');
 
   userStreamSocket.on('disconnect', (disconnectMessage) => {
     console.info('==> 😅  disconnectMessage', disconnectMessage);
   });
 
-  userStreamSocket.on('connect', (request) => {
+  userStreamSocket.on('connect', () => {
     console.info('==> 😂  connecting...');
   });
 
-  userStreamSocket.on('connected', (request) => {
+  userStreamSocket.on('connected', () => {
     console.info('==> 😍  connected...');
     // this event will not always be triggered.
   });
@@ -179,5 +171,5 @@ export default function userStream(socket) {
     console.log('==> 😱  error!!!!', eventMsg);
   });
 
-  return userStreamSocket;
+  return userStreamSocket; // eslint-disable-line consistent-return
 }

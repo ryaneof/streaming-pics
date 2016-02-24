@@ -14,8 +14,6 @@ export default function showTweetDetail(req) {
 
     const { tweetIdStr, mediumIdStr } = req.body;
 
-    // console.log('req.body', req.body);
-
     return getTweetDetail(user, {
       tweetIdStr,
       mediumIdStr
@@ -25,6 +23,6 @@ export default function showTweetDetail(req) {
     })
     .catch((error) => {
       reject(error);
-    })
+    });
   });
 }

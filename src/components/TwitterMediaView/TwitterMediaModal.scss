@@ -88,10 +88,79 @@
   .twitterMediaModalTweetText {
     font-size: 16px;
     line-height: 24px;
-    padding-bottom: 8px;
+  }
+
+  .twitterMediaModalQuotedTweet {
+    background-color: #f1f4f7;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .twitterMediaModalQuotedTweetUser {
+    padding: 16px;
+    padding-bottom: 0;
+
+    strong {
+      color: #878a8d;
+      font-size: 12px;
+      padding-right: 4px;
+    }
+
+    span {
+      color: #abadaf;
+    }
+  }
+
+  .twitterMediaModalQuotedTweetText {
+    padding: 16px;
+    padding-top: 0;
+    font-size: 12px;
+    color: #abadaf;
+  }
+
+  .twitterMediaModalRetweetedIcon {
+    height: 28px;
+    line-height: 28px;
+  }
+
+  .twitterMediaModalRetweetedUser {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .twitterMediaModalRetweetedUserLink {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #878a8d;
+    font-weight: 400;
+    text-decoration: none;
+    height: 28px;
+    line-height: 28px;
+
+    img {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      margin-right: 4px;
+    }
+
+    span {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 
   .twitterMediaModalTweetMeta {
+    padding-top: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

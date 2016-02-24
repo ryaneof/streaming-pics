@@ -1,22 +1,14 @@
-export function extractTweetMedia(tweet) {
-  let status = tweet;
-
-  if (tweet.retweeted_status) {
-    status = tweet.retweeted_status;
-  } else if (tweet.quoted_status) {
-    status = tweet.quoted_status;
-  }
-
-  const user = status.user;
-
-  let mediaArr = [];
-  let thirdPartyServiceMediaURLArr = [];
-  let twitterMediaArr = [];
-  let containsExtendedMediaEntities = (status.extended_entities && status.extended_entities.media && status.extended_entities.media.length > 0);
+function extractStatusMedia(status) {
+  // a status would be a tweet, a retweeted tweet, or a quoted tweet
+  const thirdPartyServiceMediaURLArr = [];
+  const twitterMediaArr = [];
+  const containsExtendedMediaEntities = (status.extended_entities &&
+    status.extended_entities.media &&
+    status.extended_entities.media.length > 0
+  );
 
   if (containsExtendedMediaEntities) {
     status.extended_entities.media.forEach((extendedMediaItem) => {
-
       switch (extendedMediaItem.type) {
         case 'photo':
           twitterMediaArr.push({
@@ -82,8 +74,8 @@ export function extractTweetMedia(tweet) {
 
   // filter third party potential image from tweet url entities
   status.entities.urls.forEach((entitiesURLItem, entitiesURLIndex) => {
-    let expandedURL = entitiesURLItem.expanded_url;
-    let instagramMatchResult = expandedURL.match(/instagram.com\/p\/(.*)/);
+    const expandedURL = entitiesURLItem.expanded_url;
+    const instagramMatchResult = expandedURL.match(/instagram.com\/p\/(.*)/);
 
     if (instagramMatchResult && instagramMatchResult[1]) {
       thirdPartyServiceMediaURLArr.push({
@@ -97,24 +89,75 @@ export function extractTweetMedia(tweet) {
     }
   });
 
-  mediaArr = twitterMediaArr.concat(thirdPartyServiceMediaURLArr).map((mediaItem) => {
-    mediaItem.favoriteCount = status.favorite_count;
-    mediaItem.isFavorited = status.favorited;
-    mediaItem.isRetweeted = status.retweeted;
-    // mediaItem.retweetCount = status.retweet_count;
-    mediaItem.tweetCreatedTime = new Date(status.created_at).getTime();
-    mediaItem.tweetText = status.text;
-    mediaItem.tweetIdStr = tweet.id_str;
-    mediaItem.tweetUserScreenName = tweet.user.screen_name;
-    // mediaItem.tweetUserIdStr = tweet.user.id_str;
-    mediaItem.tweetURL = `https://twitter.com/${ tweet.user.screen_name }/status/${ tweet.id_str }`;
-    mediaItem.userScreenName =  user.screen_name;
-    mediaItem.userProfileImageURL = user.profile_image_url_https.replace(/\_normal/, '_bigger');
-    mediaItem.userName = user.name;
-    mediaItem.userIdStr = user.id_str;
+  return twitterMediaArr.concat(thirdPartyServiceMediaURLArr);
+}
 
-    return mediaItem;
+function appendTweetInformation(mediaItem, status, tweet) {
+  const user = status.user;
+  const quotedStatus = status.quoted_status;
+
+  mediaItem.favoriteCount = status.favorite_count;
+  mediaItem.isFavorited = status.favorited;
+  mediaItem.isRetweeted = status.retweeted;
+  // mediaItem.retweetCount = status.retweet_count;
+  mediaItem.retweetedTweetIdStr = status.retweeted ? status.id_str : null;
+  mediaItem.tweetCreatedTime = new Date(status.created_at).getTime();
+  mediaItem.tweetText = status.text;
+  mediaItem.tweetIdStr = tweet.id_str;
+  mediaItem.tweetUserScreenName = tweet.user.screen_name;
+  mediaItem.tweetUserName = tweet.user.name;
+  mediaItem.tweetUserProfileImageURL = tweet.user.profile_image_url_https.replace(/\_normal/, '_bigger');
+  // mediaItem.tweetUserIdStr = tweet.user.id_str;
+  mediaItem.tweetURL = `https://twitter.com/${ tweet.user.screen_name }/status/${ tweet.id_str }`;
+  mediaItem.userScreenName = user.screen_name;
+  mediaItem.userProfileImageURL = user.profile_image_url_https.replace(/\_normal/, '_bigger');
+  mediaItem.userName = user.name;
+  mediaItem.userIdStr = user.id_str;
+
+  mediaItem.quotedStatus = quotedStatus ? {
+    favoriteCount: quotedStatus.favorite_count,
+    isFavorited: quotedStatus.favorited,
+    isRetweeted: quotedStatus.retweeted,
+    tweetUserScreenName: quotedStatus.user.screen_name,
+    tweetIdStr: quotedStatus.id_str,
+    tweetText: quotedStatus.text,
+    tweetURL: `https://twitter.com/${ quotedStatus.user.screen_name }/status/${ quotedStatus.id_str }`,
+    userScreenName: quotedStatus.user.screen_name,
+    userProfileImageURL: quotedStatus.user.profile_image_url_https.replace(/\_normal/, '_bigger'),
+    userName: quotedStatus.user.name,
+    userIdStr: quotedStatus.user.id_str
+  } : null;
+
+  return mediaItem;
+}
+
+export function extractTweetMedia(tweet) {
+  let status = tweet;
+
+  if (tweet.retweeted_status) {
+    status = tweet.retweeted_status;
+  }
+
+  let mediaArr = [];
+  let quotedStatusMediaArr = [];
+
+  const tweetMediaArr = extractStatusMedia(status);
+  const quotedStatus = status.quoted_status;
+
+  mediaArr = tweetMediaArr.map((mediaItem) => {
+    return appendTweetInformation(mediaItem, status, tweet);
   });
 
-  return mediaArr;
+  if (quotedStatus) {
+    // quoted status is technically two complete tweets
+    // media within quoted status should contain original status information
+    quotedStatusMediaArr = extractStatusMedia(quotedStatus).map((mediaItem) => {
+      mediaItem = appendTweetInformation(mediaItem, status, tweet); // eslint-disable-line no-param-reassign
+      mediaItem.isFromQuotedStatus = true;
+
+      return mediaItem;
+    });
+  }
+
+  return mediaArr.concat(quotedStatusMediaArr);
 }

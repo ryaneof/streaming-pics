@@ -3,11 +3,11 @@ import { extractTweetMedia } from '../utils/tweetHandler';
 
 export default function favoriteStatuses(socket, userScreenName) {
   let user;
-  let T;
+  let twitClient;
 
   try {
     user = socket.handshake.session.passport.user;
-  } catch (e) {
+  } catch (err) {
     user = null;
   }
 
@@ -21,11 +21,11 @@ export default function favoriteStatuses(socket, userScreenName) {
     return;
   }
 
-  T = createTwitClient(user);
+  twitClient = createTwitClient(user);
 
   // include entities
 
-  T.get('favorites/list', {
+  twitClient.get('favorites/list', {
     count: 100,
     screen_name: userScreenName
   }, (err, data, response) => {
@@ -57,7 +57,7 @@ export default function favoriteStatuses(socket, userScreenName) {
     const lastTweet = data[data.length - 1];
 
     data.forEach((tweet) => {
-      let mediaArr = extractTweetMedia(tweet);
+      const mediaArr = extractTweetMedia(tweet);
 
       if (mediaArr.length > 0) {
         media = media.concat(mediaArr);
@@ -73,12 +73,12 @@ export default function favoriteStatuses(socket, userScreenName) {
   socket.on('loadPreviousFavoriteStatuses', (maxTweetId) => {
     if (!maxTweetId) {
       socket.emit('previousFavoriteStatusesLoaded', {
-      error: 'Exception: invalid tweet id while loading previous user favorited statuses.'
+        error: 'Exception: invalid tweet id while loading previous user favorited statuses.'
       });
       return;
     }
 
-    T.get('favorites/list', {
+    twitClient.get('favorites/list', {
       count: 100,
       screen_name: userScreenName,
       max_id: maxTweetId
@@ -116,7 +116,7 @@ export default function favoriteStatuses(socket, userScreenName) {
       }
 
       data.forEach((tweet) => {
-        let mediaArr = extractTweetMedia(tweet);
+        const mediaArr = extractTweetMedia(tweet);
 
         if (mediaArr.length > 0) {
           media = media.concat(mediaArr);
@@ -127,6 +127,6 @@ export default function favoriteStatuses(socket, userScreenName) {
         media: media,
         lastTweetId: lastTweet.id
       });
-    })
+    });
   });
 }

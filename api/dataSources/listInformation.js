@@ -1,10 +1,10 @@
 import { createTwitClient } from '../utils/twitClient';
 
 export default function getListInformation(user, listInformationParams) {
-  let T = createTwitClient(user);
+  const twitClient = createTwitClient(user);
 
   return new Promise((resolve, reject) => {
-    T.get('lists/show', {
+    twitClient.get('lists/show', {
       owner_screen_name: listInformationParams.userScreenName,
       slug: listInformationParams.listSlug
     }, (err, data, response) => {
@@ -13,8 +13,7 @@ export default function getListInformation(user, listInformationParams) {
         return reject(err);
       }
 
-      let listDetail = {};
-
+      const listDetail = {};
       const listOwner = data.user || {};
 
       // console.log(data);

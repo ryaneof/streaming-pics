@@ -110,31 +110,54 @@ export default class TwitterMediaModal extends Component {
     this.props.displayModalNextMedia();
   }
 
+  handleOpenRoute = (routeTitle, routeURI) => {
+    if (global.history) {
+      global.history.pushState(null, routeTitle, routeURI);
+    }
+
+    this.props.hideMediaModal();
+    this.props.pushState(routeURI);
+  }
+
   handleOpenUserRoute = (event) => {
     const { mediaItem: { userScreenName }} = this.props;
     event.stopPropagation();
     event.preventDefault();
+    this.handleOpenRoute(`Media by @${ userScreenName }`, `/${ userScreenName }`);
+  }
 
-    if (global.history) {
-      global.history.pushState(
-        null,
-        `Media by @${ userScreenName }`,
-        `/${ userScreenName }`
-      );
-    }
+  handleOpenQuotedStatusRoute = (event) => {
+    const { mediaItem: { quotedStatus }} = this.props;
+    event.stopPropagation();
+    event.preventDefault();
+    this.handleOpenRoute(
+      `Tweet of @${ quotedStatus.userScreenName }`,
+      `/${ quotedStatus.userScreenName }/status/${ quotedStatus.tweetIdStr }`
+    );
+  }
 
-    this.props.hideMediaModal();
-    this.props.pushState(`/${ userScreenName }`);
+  handleOpenRetweetedUserRoute = (event) => {
+    const { mediaItem: { tweetUserScreenName }} = this.props;
+    event.stopPropagation();
+    event.preventDefault();
+    this.handleOpenRoute(`Media by @${ tweetUserScreenName }`, `/${ tweetUserScreenName }`);
   }
 
   handleClickedModalLikeIcon = (event) => {
-    const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
     event.stopPropagation();
+    const { mediaItem: { isFavorited, isRetweeted, tweetIdStr, retweetedTweetIdStr }} = this.props;
+    let currentTweetIdStr;
+
+    if (isRetweeted) {
+      currentTweetIdStr = retweetedTweetIdStr;
+    } else {
+      currentTweetIdStr = tweetIdStr;
+    }
 
     if (!isFavorited) {
-      this.props.favoriteMediaItem(tweetIdStr);
+      this.props.favoriteMediaItem(currentTweetIdStr);
     } else {
-      this.props.unFavoriteMediaItem(tweetIdStr);
+      this.props.unFavoriteMediaItem(currentTweetIdStr);
     }
   }
 
@@ -205,6 +228,32 @@ export default class TwitterMediaModal extends Component {
               <p className={ styles.twitterMediaModalTweetText }>
                 { mediaItem.tweetText }
               </p>
+              { mediaItem.quotedStatus &&
+              <div className={ styles.twitterMediaModalQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
+                <p className={ styles.twitterMediaModalQuotedTweetUser }>
+                  <strong>{ mediaItem.quotedStatus.userName }</strong>
+                  <span>{ `@${ mediaItem.quotedStatus.userScreenName }` }</span>
+                </p>
+                <p className={ styles.twitterMediaModalQuotedTweetText }>
+                  { mediaItem.quotedStatus.tweetText }
+                </p>
+              </div>
+              }
+              { mediaItem.isRetweeted &&
+              <p className={ styles.twitterMediaModalRetweetedUser }>
+                <span className={ styles.twitterMediaModalRetweetedIcon }>
+                  <SVGIcon iconName="retweet" iconClass="iconRetweet" />
+                </span>
+                <a
+                  className={ styles.twitterMediaModalRetweetedUserLink }
+                  href={ `/${ mediaItem.tweetUserScreenName }` }
+                  onClick={ this.handleOpenRetweetedUserRoute }
+                >
+                  <img src={ mediaItem.tweetUserProfileImageURL } />
+                  <span>{ mediaItem.tweetUserName }</span>
+                </a>
+              </p>
+              }
               <p className={ styles.twitterMediaModalTweetMeta }>
                 <span className={ twitterMediaModalFavoriteClassName } onClick={ this.handleClickedModalLikeIcon }>
                   <SVGIcon

@@ -174,9 +174,25 @@ export default function reducer(state = initialState, action = {}) {
       const favoritedActionResult = action.result;
       const favoritedTweetIdStr = favoritedActionResult.tweetIdStr;
       const updatedMediaArrWithFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
-        if (mediaItem.tweetIdStr === favoritedTweetIdStr) {
-          mediaItem.isFavorited = true;
-          mediaItem.favoriteCount = favoritedActionResult.favoriteCount;
+        let tweetIdStr;
+        let mediaItemSource;
+
+        if (mediaItem.isRetweeted) {
+          tweetIdStr = mediaItem.retweetedTweetIdStr;
+        } else {
+          tweetIdStr = mediaItem.tweetIdStr;
+        }
+
+        if (mediaItem.isFromQuotedStatus) {
+          mediaItemSource = mediaItem.quotedStatus;
+          tweetIdStr = mediaItemSource.tweetIdStr;
+        } else {
+          mediaItemSource = mediaItem;
+        }
+
+        if (tweetIdStr === favoritedTweetIdStr) {
+          mediaItemSource.isFavorited = true;
+          mediaItemSource.favoriteCount = favoritedActionResult.favoriteCount;
         }
         return mediaItem;
       });
@@ -214,9 +230,25 @@ export default function reducer(state = initialState, action = {}) {
       const unfavoritedActionResult = action.result;
       const unfavoritedTweetIdStr = unfavoritedActionResult.tweetIdStr;
       const updatedMediaArrWithUnFavoritedTweetIdStr = state.mediaArr.map((mediaItem) => {
-        if (mediaItem.tweetIdStr === unfavoritedTweetIdStr) {
-          mediaItem.isFavorited = false;
-          mediaItem.favoriteCount = unfavoritedActionResult.favoriteCount;
+        let tweetIdStr;
+        let mediaItemSource;
+
+        if (mediaItem.isRetweeted) {
+          tweetIdStr = mediaItem.retweetedTweetIdStr;
+        } else {
+          tweetIdStr = mediaItem.tweetIdStr;
+        }
+
+        if (mediaItem.isFromQuotedStatus) {
+          mediaItemSource = mediaItem.quotedStatus;
+          tweetIdStr = mediaItemSource.tweetIdStr;
+        } else {
+          mediaItemSource = mediaItem;
+        }
+
+        if (tweetIdStr === unfavoritedTweetIdStr) {
+          mediaItemSource.isFavorited = false;
+          mediaItemSource.favoriteCount = unfavoritedActionResult.favoriteCount;
         }
         return mediaItem;
       });

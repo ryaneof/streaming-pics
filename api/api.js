@@ -12,7 +12,7 @@ import { mapUrl } from 'utils/url.js';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
-import SocketIoExpressSession from 'socket.io-express-session';
+import socketIoExpressSession from 'socket.io-express-session';
 import nconf from 'nconf';
 import passport from 'passport';
 import TwitterStrategy from 'passport-twitter';
@@ -37,6 +37,14 @@ const sessionStore = new RedisStore({
   client: redisClient
 });
 
+const expressSession = session({
+  secret: nconf.get('SESSION_SECRET') || 'streaming-pics',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
+  store: sessionStore
+});
+
 io.path('/ws');
 
 passport.use(
@@ -46,8 +54,8 @@ passport.use(
     callbackURL: nconf.get('TWITTER_CALLBACK_URL')
   },
   (token, tokenSecret, profile, done) => {
-    let { username, displayName, _json } = profile;
-    let profileImageURL = _json.profile_image_url_https.replace(/\_normal/, '_bigger');
+    const { username, displayName, _json } = profile;
+    const profileImageURL = _json.profile_image_url_https.replace(/\_normal/, '_bigger');
 
     // only store these in session
     return done(null, {
@@ -66,14 +74,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((user, done) => {
   done(null, user);
-});
-
-var expressSession = session({
-  secret: nconf.get('SESSION_SECRET') || 'streaming-pics',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
-  store: sessionStore
 });
 
 app.use(morgan('short'));
@@ -136,10 +136,12 @@ if (config.apiPort) {
     console.info('==> 💻  Send requests to http://%s:%s', config.apiHost, config.apiPort);
   });
 
-  io.use(SocketIoExpressSession(expressSession));
+  io.use(socketIoExpressSession(expressSession));
 
   io.on('connection', (socket) => {
-    let userStreamSocket, userTimelineStatuses, favoriteStatuses;
+    let userStreamSocket;
+    // let userTimelineStatuses;
+    // let favoriteStatuses;
 
     // Home Timeline + User Streaming
     socket.on('getUserStream', () => {
@@ -173,7 +175,6 @@ if (config.apiPort) {
   });
 
   io.listen(runnable);
-
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');
 }

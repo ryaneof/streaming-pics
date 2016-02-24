@@ -1,6 +1,8 @@
 import Twit from 'twit';
 import nconf from 'nconf';
 
+nconf.env();
+
 export function createTwitClient(user) {
   return new Twit({
     consumer_key: nconf.get('TWITTER_CONSUMER_KEY'),
