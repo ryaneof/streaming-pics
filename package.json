@@ -3,7 +3,7 @@
   "description": "A simpler media timeline for Twitter.",
   "author": "Ryan Chu <ryaneof@gmail.com>",
   "license": "GPL-2.0",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/ryaneof/streaming-pics"
