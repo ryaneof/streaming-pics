@@ -11,9 +11,14 @@ A simpler media timeline for Twitter.
 - Display media from authenticated user's timeline (realtime).
 - Display media from posted or liked tweets by a Twitter user.
 - Display media from tweets in a public Twitter list.
+- Display media from others' retweeted or quoted tweets.
 - Display photos from tweets which contain an Instagram photo link.
 - Like & Unlike a tweet.
 - Support images, GIFs and videos uploaded from Twitter official clients.
+
+## Browser Compatabilities
+
+I won't support any fallback browsers such as IE 8 or even IE 6. Streaming Pics should be able to run smoothly on the latest version of Chrome, Safari, Firefox and IE Edge. Feel free to submit an issue if there's any problem.
 
 ## Requirements
 

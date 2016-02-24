@@ -46,6 +46,7 @@ export default class About extends Component {
               <li>Display media from authenticated user's timeline (realtime).</li>
               <li>Display media from posted or liked tweets by a Twitter user.</li>
               <li>Display media from tweets in a public Twitter list.</li>
+              <li>Display media from others' retweeted or quoted tweets.</li>
               <li>Display photos from tweets which contain an Instagram photo link.</li>
               <li>Like & Unlike a tweet.</li>
               <li>Support images, GIFs and videos uploaded from Twitter official clients.</li>
