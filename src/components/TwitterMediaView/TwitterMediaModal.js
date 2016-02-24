@@ -136,6 +136,13 @@ export default class TwitterMediaModal extends Component {
     );
   }
 
+  handleOpenRetweetedUserRoute = (event) => {
+    const { mediaItem: { tweetUserScreenName }} = this.props;
+    event.stopPropagation();
+    event.preventDefault();
+    this.handleOpenRoute(`Media by @${ tweetUserScreenName }`, `/${ tweetUserScreenName }`);
+  }
+
   handleClickedModalLikeIcon = (event) => {
     const { mediaItem: { isFavorited, tweetIdStr }} = this.props;
     event.stopPropagation();
@@ -224,6 +231,21 @@ export default class TwitterMediaModal extends Component {
                   { mediaItem.quotedStatus.tweetText }
                 </p>
               </div>
+              }
+              { mediaItem.isRetweeted &&
+              <p className={ styles.twitterMediaModalRetweetedUser }>
+                <span className={ styles.twitterMediaModalRetweetedIcon }>
+                  <SVGIcon iconName="retweet" iconClass="iconRetweet" />
+                </span>
+                <a
+                  className={ styles.twitterMediaModalRetweetedUserLink }
+                  href={ `/${ mediaItem.tweetUserScreenName }` }
+                  onClick={ this.handleOpenRetweetedUserRoute }
+                >
+                  <img src={ mediaItem.tweetUserProfileImageURL } />
+                  <span>{ mediaItem.tweetUserName }</span>
+                </a>
+              </p>
               }
               <p className={ styles.twitterMediaModalTweetMeta }>
                 <span className={ twitterMediaModalFavoriteClassName } onClick={ this.handleClickedModalLikeIcon }>

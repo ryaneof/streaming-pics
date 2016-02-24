@@ -104,6 +104,8 @@ function appendTweetInformation(mediaItem, status, tweet) {
   mediaItem.tweetText = status.text;
   mediaItem.tweetIdStr = tweet.id_str;
   mediaItem.tweetUserScreenName = tweet.user.screen_name;
+  mediaItem.tweetUserName = tweet.user.name;
+  mediaItem.tweetUserProfileImageURL = tweet.user.profile_image_url_https.replace(/\_normal/, '_bigger');
   // mediaItem.tweetUserIdStr = tweet.user.id_str;
   mediaItem.tweetURL = `https://twitter.com/${ tweet.user.screen_name }/status/${ tweet.id_str }`;
   mediaItem.userScreenName = user.screen_name;
