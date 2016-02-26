@@ -111,7 +111,8 @@ module.exports = {
     }),
     webpackIsomorphicToolsPlugin.development(),
     new webpack.EnvironmentPlugin([
-      'GOOGLE_ANALYTICS_TRACKING_ID'
+      'GOOGLE_ANALYTICS_TRACKING_ID',
+      'NODE_ENV'
     ])
   ]
 };

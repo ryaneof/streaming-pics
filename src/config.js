@@ -10,6 +10,7 @@ const environment = {
 }[process.env.NODE_ENV || 'development'];
 
 module.exports = Object.assign({
+  env: process.env.NODE_ENV,
   host: process.env.HOST || '127.0.0.1',
   port: process.env.PORT,
   apiHost: process.env.APIHOST || '127.0.0.1',

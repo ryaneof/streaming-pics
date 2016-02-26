@@ -52,7 +52,7 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    if (global.document) {
+    if (config.env === 'production' && global.document) {
       ga.initialize(config.gaTrackId);
     }
   }
