@@ -119,7 +119,7 @@ app.use((req, res) => {
           res.redirect(reason.redirect);
         } else {
           console.error('API ERROR:', pretty.render(reason));
-          res.status(reason.status || 500).json(reason);
+          res.status(reason.statusCode || 500).json(reason);
         }
       });
   } else {

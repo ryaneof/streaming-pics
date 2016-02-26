@@ -76,7 +76,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         tweet: {
           ...state.tweet,
-          favoriteCount: action.result.favoriteCount
+          favoriteCount: action.result.favoriteCount || state.tweet.favoriteCount
         }
       };
     case FAVORITE_TWEET_FAILED:

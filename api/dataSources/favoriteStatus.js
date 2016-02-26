@@ -9,8 +9,16 @@ export function createFavoriteStatus(user, favoriteStatusParams) {
       include_entities: false
     }, (err, data, response) => {
       if (err) {
-        console.log(err, data, response);
-        return reject(err);
+        if (err.code !== 139) {
+          console.log(err, data, response);
+          return reject(err);
+        }
+
+        // code 139: You have already favorited this statuss
+        return resolve({
+          isFavorited: true,
+          tweetIdStr: favoriteStatusParams.tweetIdStr
+        });
       }
 
       const tweet = {};

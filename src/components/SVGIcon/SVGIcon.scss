@@ -53,10 +53,13 @@
   }
 
   &.iconRetweet {
-    margin-left: -4px;
+    margin-left: -3px;
+    margin-right: 1px;
+    margin-top: 1px;
+    margin-bottom: -1px;
     svg {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
     }
   }
 }
