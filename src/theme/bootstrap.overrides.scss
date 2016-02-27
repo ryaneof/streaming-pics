@@ -2,9 +2,12 @@
  * Override Bootstrap styles that you can't modify via variables here.
  *
  */
+@import "./fonts.scss";
 
-body {
+html, body {
   background-color: #f1f4f7;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'SourceSansPro', 'Helvetica Neue', 'Helvetica', sans-serif;
 }
 
 a {
