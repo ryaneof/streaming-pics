@@ -38,8 +38,8 @@ export default class About extends Component {
             </p>
             <p>
               Streaming Pics is open source software, released under the
-              <a href="https://github.com/ryaneof/streaming-pics/blob/master/LICENSE">GPL-2.0 License</a>. It is
-              <a href="https://github.com/ryaneof/streaming-pics">hosted on GitHub</a>.
+              <a className={ styles.anchorWithoutRightPadding } href="https://github.com/ryaneof/streaming-pics/blob/master/LICENSE">GPL-2.0 License</a>. It is
+              <a className={ styles.anchorWithoutRightPadding } href="https://github.com/ryaneof/streaming-pics">hosted on GitHub</a>.
             </p>
             <p>Streaming Pics is still in beta. Here're some available features:</p>
             <ul>
