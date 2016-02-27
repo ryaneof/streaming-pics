@@ -25,8 +25,9 @@ export default function getTweetDetail(user, tweetParams) {
       let currentMediumIndex = -1;
 
       tweet.favoriteCount = status.favorite_count;
+      // tweet.isCurrentUserRetweet = !!status.current_user_retweet;
       tweet.isFavorited = status.favorited;
-      tweet.isRetweeted = status.retweeted;
+      tweet.isRetweeted = !!originalTweet.retweeted_status;
       tweet.retweetedTweetIdStr = status.retweeted ? status.id_str : null;
       tweet.mediaArr = extractTweetMedia(status);
       // tweet.retweetCount = status.retweet_count;

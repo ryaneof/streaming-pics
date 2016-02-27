@@ -98,7 +98,7 @@ function appendTweetInformation(mediaItem, status, tweet) {
 
   mediaItem.favoriteCount = status.favorite_count;
   mediaItem.isFavorited = status.favorited;
-  mediaItem.isRetweeted = status.retweeted;
+  mediaItem.isRetweeted = !!tweet.retweeted_status;
   // mediaItem.retweetCount = status.retweet_count;
   mediaItem.retweetedTweetIdStr = status.retweeted ? status.id_str : null;
   mediaItem.tweetCreatedTime = new Date(status.created_at).getTime();
