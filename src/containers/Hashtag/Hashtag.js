@@ -25,7 +25,7 @@ export default class Hashtag extends Component {
   };
 
   componentDidMount = () => {
-    this.props.setAppTitle('Hashtag');
+    this.props.setAppTitle(`#${ this.props.params.hashtag }`);
 
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
@@ -37,7 +37,7 @@ export default class Hashtag extends Component {
 
     return (
       <div className={ styles.hashtag }>
-        <Helmet title="Hashtag" />
+        <Helmet title={ `#${ this.props.params.hashtag }` } />
         { user &&
           <TwitterMediaView
             deleteMessageReceivedListener="searchStreamDeletedMessage"

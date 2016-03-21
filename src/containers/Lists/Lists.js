@@ -27,8 +27,8 @@ export default class Lists extends Component {
   };
 
   componentDidMount() {
-    this.props.setAppTitle(`Lists of @${ this.props.params.userScreenName }`);
-
+    const { userScreenName, listRelation } = this.props.params;
+    this.props.setAppTitle(`@${ userScreenName } ${ listRelation } lists`);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 
@@ -40,6 +40,8 @@ export default class Lists extends Component {
   }
 
   componentDidUpdate() {
+    const { userScreenName, listRelation } = this.props.params;
+    this.props.setAppTitle(`@${ userScreenName } ${ listRelation } lists`);
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
 
@@ -51,7 +53,7 @@ export default class Lists extends Component {
 
     return (
       <div className={ styles.user }>
-        <Helmet title={ `Lists of @${ userScreenName }` } />
+        <Helmet title={ `@${ userScreenName } ${ listRelation } lists` } />
         { user &&
           <TwitterUserProfileView
             userScreenName={ userScreenName }

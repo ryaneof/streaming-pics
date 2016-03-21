@@ -27,7 +27,7 @@ export default class List extends Component {
   };
 
   componentDidMount() {
-    this.props.setAppTitle(`List: @${ this.props.params.userScreenName }/${ this.props.params.listSlug }`);
+    this.props.setAppTitle(`@${ this.props.params.userScreenName }/${ this.props.params.listSlug }`);
 
     ga.pageview(`${ this.props.location.pathname }${ this.props.location.search }`);
   }
@@ -46,7 +46,7 @@ export default class List extends Component {
 
     return (
       <div className={ styles.user }>
-        <Helmet title={ `List: @${ userScreenName }/${ listSlug }` } />
+        <Helmet title={ `@${ userScreenName }/${ listSlug }` } />
         { user &&
           <TwitterListInformationView
             userScreenName={ userScreenName }
