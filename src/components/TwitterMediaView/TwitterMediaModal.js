@@ -5,6 +5,7 @@ import { routeActions } from 'react-router-redux';
 import ga from 'react-ga';
 import Helmet from 'react-helmet';
 import moment from 'moment';
+import ReactTwitterText from 'react-twitter-text';
 import { SVGIcon } from 'components';
 import {
   hideMediaModal,
@@ -161,6 +162,10 @@ export default class TwitterMediaModal extends Component {
     }
   }
 
+  handleRedirectTwitterEntitiesCallback = (uri) => {
+    location.href = uri;
+  }
+
   close = () => {
     this.props.hideMediaModal();
 
@@ -225,9 +230,18 @@ export default class TwitterMediaModal extends Component {
                   <span className={ styles.twitterMediaModalUserScreenName }>@{ mediaItem.userScreenName }</span>
                 </p>
               </div>
-              <p className={ styles.twitterMediaModalTweetText }>
-                { mediaItem.tweetText }
-              </p>
+              <div className={ styles.twitterMediaModalTweetText }>
+                <ReactTwitterText
+                  redirectCallback={ this.handleRedirectTwitterEntitiesCallback }
+                  twitterURLEntities={ mediaItem.tweetURLs }
+                  tweetText={ mediaItem.tweetText }
+                  twitterTextOptions={{
+                    usernameUrlBase: '/',
+                    hashtagUrlBase: '/hashtag/',
+                    targetBlank: true
+                  }}
+                />
+              </div>
               { mediaItem.quotedStatus &&
               <div className={ styles.twitterMediaModalQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
                 <p className={ styles.twitterMediaModalQuotedTweetUser }>

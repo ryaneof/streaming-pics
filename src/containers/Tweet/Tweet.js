@@ -14,6 +14,7 @@ import {
 } from 'redux/modules/tweetInformation';
 import moment from 'moment';
 import { SVGIcon, LoadingIcon } from 'components';
+import ReactTwitterText from 'react-twitter-text';
 
 @connect(
   state => ({
@@ -158,6 +159,10 @@ export default class Medium extends Component {
     this.props.pushState(`/${ quotedStatus.userScreenName }/status/${ quotedStatus.tweetIdStr }`);
   }
 
+  handleRedirectTwitterEntitiesCallback = (uri) => {
+    location.href = uri;
+  }
+
   render() {
     const styles = require('./Tweet.scss');
     const { tweetInformation, params } = this.props; // eslint-disable-line no-unused-vars
@@ -174,6 +179,7 @@ export default class Medium extends Component {
     let tweetPrevClassName = '';
     let tweetNextClassName = '';
     let tweetCreatedTime;
+    let twitterURLEntities = [];
 
     if (mediaArr && mediaArr.length > 1 && currentMediumIndex > -1) {
       if (currentMediumIndex > 0) {
@@ -187,6 +193,10 @@ export default class Medium extends Component {
 
     if (tweet.tweetCreatedTime) {
       tweetCreatedTime = moment(tweet.tweetCreatedTime);
+    }
+
+    if (tweet.tweetIdStr) {
+      twitterURLEntities = tweet.tweetURLs.concat(tweet.mediaArr);
     }
 
     return (
@@ -206,9 +216,18 @@ export default class Medium extends Component {
                 <span className={ styles.tweetUserScreenName }>@{ tweet.userScreenName }</span>
               </p>
             </div>
-            <p className={ styles.tweetTweetText }>
-              { tweet.tweetText }
-            </p>
+            <div className={ styles.tweetTweetText }>
+              <ReactTwitterText
+                redirectCallback={ this.handleRedirectTwitterEntitiesCallback }
+                twitterURLEntities={ twitterURLEntities }
+                tweetText={ tweet.tweetText }
+                twitterTextOptions={{
+                  usernameUrlBase: '/',
+                  hashtagUrlBase: '/hashtag/',
+                  targetBlank: true
+                }}
+              />
+            </div>
             { tweet.quotedStatus &&
             <div className={ styles.tweetQuotedTweet } onClick={ this.handleOpenQuotedStatusRoute }>
               <p className={ styles.tweetQuotedTweetUser }>

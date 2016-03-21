@@ -139,7 +139,8 @@ if (config.apiPort) {
   io.use(socketIoExpressSession(expressSession));
 
   io.on('connection', (socket) => {
-    let userStreamSocket, searchStreamSocket;
+    let userStreamSocket;
+    let searchStreamSocket;
     // let userTimelineStatuses;
     // let favoriteStatuses;
 

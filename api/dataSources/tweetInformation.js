@@ -38,6 +38,11 @@ export default function getTweetDetail(user, tweetParams) {
       tweet.tweetUserName = originalTweet.user.name;
       tweet.tweetUserProfileImageURL = originalTweet.user.profile_image_url_https.replace(/\_normal/, '_bigger');
       tweet.tweetURL = `https://twitter.com/${ originalTweet.user.screen_name }/status/${ originalTweet.id_str }`;
+      tweet.tweetHashtags = originalTweet.entities.hashtags;
+      tweet.tweetSymbols = originalTweet.entities.symbols;
+      tweet.tweetURLs = originalTweet.entities.urls;
+      tweet.tweetMentions = originalTweet.entities.user_mentions;
+      tweet.tweetMedia = originalTweet.entities.media;
       tweet.userScreenName = status.user.screen_name;
       tweet.userProfileImageURL = status.user.profile_image_url_https.replace(/\_normal/, '_bigger');
       tweet.userName = status.user.name;
