@@ -7,6 +7,7 @@ import {
 import {
   About,
   App,
+  Hashtag,
   Home,
   Landing,
   List,
@@ -41,6 +42,7 @@ export default (store) => {
       { /* Routes requiring signed in */ }
       <Route onEnter={ requireSignedIn }>
         <Route path="home" component={ Home }/>
+        <Route path="hashtag/:hashtag" component={ Hashtag } />
         <Route path=":userScreenName" component={ User } />
         <Route path=":userScreenName/likes" component={ UserLikes } />
         <Route path=":userScreenName/list/:listSlug" component={ List } />

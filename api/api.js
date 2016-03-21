@@ -139,7 +139,7 @@ if (config.apiPort) {
   io.use(socketIoExpressSession(expressSession));
 
   io.on('connection', (socket) => {
-    let userStreamSocket;
+    let userStreamSocket, searchStreamSocket;
     // let userTimelineStatuses;
     // let favoriteStatuses;
 
@@ -153,6 +153,19 @@ if (config.apiPort) {
       if (userStreamSocket) {
         console.info('==> 🙀  user stream disconnected.');
         userStreamSocket.stop();
+      }
+    });
+
+    // Search Timeline + Search Streaming
+    socket.on('getSearchStream', (searchParams) => {
+      console.info('==> 😎  search stream started.');
+      searchStreamSocket = dataSources.searchStream(socket, searchParams);
+    });
+
+    socket.on('disconnectSearchStream', () => {
+      if (searchStreamSocket) {
+        console.info('==> 🙀  search stream disconnected.');
+        searchStreamSocket.stop();
       }
     });
 
