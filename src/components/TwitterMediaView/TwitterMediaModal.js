@@ -163,7 +163,7 @@ export default class TwitterMediaModal extends Component {
   }
 
   handleRedirectTwitterEntitiesCallback = (uri) => {
-    location.href = uri;
+    window.open(uri);
   }
 
   close = () => {
