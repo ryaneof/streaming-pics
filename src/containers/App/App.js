@@ -104,7 +104,6 @@ export default class App extends Component {
             <Nav navbar pullRight>
               <NavDropdown
                 id="app-nav-profile-dropdown"
-                title={ user.displayName }
                 className={ styles.navDropdown }
                 eventKey={1}
                 style={{ 'backgroundImage': `url('${ user.profileImageURL }')` }}
