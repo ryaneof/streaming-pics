@@ -24,7 +24,7 @@ export default function listStatuses(socket, listStatusesParams) {
   const { userScreenName, listSlug } = listStatusesParams;
 
   twitClient.get('lists/statuses', {
-    count: 100,
+    count: 1000,
     owner_screen_name: userScreenName,
     slug: listSlug,
     include_rts: true
@@ -81,7 +81,7 @@ export default function listStatuses(socket, listStatusesParams) {
     }
 
     twitClient.get('lists/statuses', {
-      count: 100,
+      count: 1000,
       owner_screen_name: userScreenName,
       slug: listSlug,
       include_rts: true

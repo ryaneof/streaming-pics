@@ -28,7 +28,7 @@ export default function searchStream(socket, searchParams) {
 
   // start loading the old tweets
   twitClient.get('search/tweets', {
-    count: 500,
+    count: 1000,
     q: searchQuery
   }, (err, result, response) => {
     if (err) {
@@ -84,7 +84,7 @@ export default function searchStream(socket, searchParams) {
     }
 
     twitClient.get('search/tweets', {
-      count: 500,
+      count: 1000,
       q: searchQuery,
       max_id: maxTweetId
     }, (err, result, response) => {

@@ -25,7 +25,7 @@ export default function userStream(socket) {
 
   // start loading the old tweets
   twitClient.get('statuses/home_timeline', {
-    count: 200
+    count: 1000
   }, (err, data, response) => {
     if (err) {
       console.log(err, data, response);
@@ -78,7 +78,7 @@ export default function userStream(socket) {
     }
 
     twitClient.get('statuses/home_timeline', {
-      count: 100,
+      count: 1000,
       max_id: maxTweetId
     }, (err, data, response) => {
       if (err) {

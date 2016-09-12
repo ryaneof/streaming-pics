@@ -26,7 +26,7 @@ export default function favoriteStatuses(socket, userScreenName) {
   // include entities
 
   twitClient.get('favorites/list', {
-    count: 100,
+    count: 1000,
     screen_name: userScreenName
   }, (err, data, response) => {
     if (err) {
@@ -79,7 +79,7 @@ export default function favoriteStatuses(socket, userScreenName) {
     }
 
     twitClient.get('favorites/list', {
-      count: 100,
+      count: 1000,
       screen_name: userScreenName,
       max_id: maxTweetId
     }, (err, data, response) => {

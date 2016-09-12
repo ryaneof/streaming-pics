@@ -26,7 +26,7 @@ export default function userTimelineStatuses(socket, userScreenName) {
   // userTimelineStatusesSocket = T.stream('statuses/filter', { follow: '' });
 
   twitClient.get('statuses/user_timeline', {
-    count: 100,
+    count: 1000,
     screen_name: userScreenName,
     include_rts: true
   }, (err, data, response) => {
@@ -82,7 +82,7 @@ export default function userTimelineStatuses(socket, userScreenName) {
     }
 
     twitClient.get('statuses/user_timeline', {
-      count: 100,
+      count: 1000,
       screen_name: userScreenName,
       include_rts: true,
       max_id: maxTweetId
